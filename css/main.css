@@ -132,6 +132,7 @@ iframe {
 .row {
   display: table-row;
   background: #fff;
+  text-align:center;
 }
 
 .row.header {
