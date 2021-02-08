@@ -29,9 +29,57 @@
 
 	<div class="project_containers">
 		<!-- Script will run here to build the individual project containers. -->
-		<table id="projectsTable"></table>
-		<div class="project-footer"> Insert button to add project here
+		<table id="projectsTable"><tr class="header-row">
+			<th>Project Name</th>
+			<th>Percent Complete</th>
+			<th>Scheduled End</th>
+			<th>Status</th>
+		</tr>
+		<tr id = "project-id">
+			<td class="title"><a href="project.html">Project Title Page</td>
+			<td class="percentComplete">75%</td>
+			<td class="due-date">10 August 2021</td>
+			<td class=Status>On Track</td>
+		</tr>
+		<tr id = "project-id">
+			<td class="title"><a href="project.html">Project Title Page</td>
+			<td class="percentComplete">75%</td>
+			<td class="due-date">10 August 2021</td>
+			<td class=Status>On Track</td>
+		</tr>
+		<tr id = "project-id">
+			<td class="title"><a href="project.html">Project Title Page</td>
+			<td class="percentComplete">75%</td>
+			<td class="due-date">10 August 2021</td>
+			<td class=Status>On Track</td>
+		</tr>
+		<tr id = "project-id">
+			<td class="title"><a href="project.html">Project Title Page</td>
+			<td class="percentComplete">75%</td>
+			<td class="due-date">10 August 2021</td>
+			<td class=Status>On Track</td>
+		</tr>
+	</table>
+		<div class="project-footer"> <button>Add Project</button>>
 			<!-- Add project script will run here. -->
+			<fieldset>
+				<form id='addForm'>
+					<label>Project Title: </label><input type="text" name="title" id="projectTitle" />
+					<br />
+					<label>Project Owner: </label> <input type="number" name="managerID" id="managerName" />
+					<br />
+					<label> Due Date: </label><input type="date" name="date" id="date">
+					</select>
+					<br />
+					<label>Status: </label>
+					<select id="projectStatus" name="projectStatus">
+					  <option value="1">Scheduled</option>
+					  <option value="2">On Schedule</option>
+					  <option value="3">Waiting</option>
+					  <option value="4">Blocked</option>
+					<br />
+					<input type="submit" value="submit" />
+				</form></fieldset>
 		</div>
 	</div>
 

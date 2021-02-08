@@ -19,7 +19,7 @@ const makeTable = (allRows) => {
 
 const makeHeaderRow = () => {
     console.log("Made it to Make HR");
-    var headers = ["id", "name", "reps", "weight", "unit", "date", "update", "delete"];
+    var headers = ["Task Title", "Owner", "Update", "Delete"];
     let html = "<tr>"
     headers.forEach(function(h){
         html += "<th>"+h+"</th>";
