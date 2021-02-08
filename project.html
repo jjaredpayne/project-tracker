@@ -29,10 +29,67 @@
   <div class="project-task-container">
     <!-- Script will run here to build the project task list -->
     <!-- Options will include an ability to modify/delete task.-->
-	<table id="tasksTable"></table>
+	<table id="tasksTable">
+		<tr class="header">
+			<th>Task Title</th>
+			<th>Comments</th>
+			<th>Owner</th>
+			<th>Due Date</th>
+			<th></th>
+			<th></th>
+			<th></th>
+		</tr>
+		<tr id = "task-id" class ="complete">
+			<td class="title">Task Title</td>
+			<td class="details">Comments go here</td>
+			<td class="owner">Sarah Bell</td>
+			<td class="due-date">10 August 2021</td>
+			<td class="edit"><button>Edit Task</button></td>
+			<td class="mark-complete"><button>Mark Complete</button></td>
+			<td class="delete"><button>Delete Task</button></td>
+		</tr>
+		<tr id = "task-id" class ="complete">
+			<td class="title">Task Title</td>
+			<td class="details">Comments go here</td>
+			<td class="owner">Sarah Bell</td>
+			<td class="due-date">10 August 2021</td>
+			<td class="edit"><button>Edit Task</button></td>
+			<td class="mark-complete"><button>Mark Complete</button></td>
+			<td class="delete"><button>Delete Task</button></td>
+		</tr>
+		<tr id = "task-id" class ="complete">
+			<td class="title">Task Title</td>
+			<td class="details">Comments go here</td>
+			<td class="owner">Sarah Bell</td>
+			<td class="due-date">10 August 2021</td>
+			<td class="edit"><button>Edit Task</button></td>
+			<td class="mark-complete"><button>Mark Complete</button></td>
+			<td class="delete"><button>Delete Task</button></td>
+		</tr>
+		<tr id = "task-id" class ="complete">
+			<td class="title">Task Title</td>
+			<td class="details">Comments go here</td>
+			<td class="owner">Sarah Bell</td>
+			<td class="due-date">10 August 2021</td>
+			<td class="edit"><button>Edit Task</button></td>
+			<td class="mark-complete"><button>Mark Complete</button></td>
+			<td class="delete"><button>Delete Task</button></td>
+		</tr>
+	</table>
 	<div class="add-task">
-		insert button to add a task here
+		<button>Add Task</button>
 		<!--Will auto build a form to add a task.-->
+		<fieldset>
+			<form id='addForm'>
+				<label>Task Title: </label><input type="text" name="title" id="projectTitle" />
+				<br />
+				<label>Task Details: </label><input type="text" name="details" id="taskDetails" />
+				<label>Task Owner: </label> <input type="number" name="devID" id="devID" />
+				<br />
+				<label> Due Date: </label><input type="date" name="date" id="date">
+				<br />
+				<input type="submit" value="submit" />
+			</form></fieldset>
 	</div>
   </div>
 
@@ -46,4 +103,12 @@
     </body>
     </html>
 
+
+- taskID: int, auto_inc, not NULL, PK
+- projectID: int, not NULL, keytask, FK (Projects:projectID)
+- title: varchar, NOT NULL
+- taskDetails: varchar
+- assignedTo: int, not NULL, FK (Developers:developerID)
+- dueDate: date
+- complete: bool, not NULL
 	
