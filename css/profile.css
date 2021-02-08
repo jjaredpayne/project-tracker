@@ -1,53 +1,83 @@
-body{
-    margin-top:20px;
-    color: #1a202c;
-    text-align: left;
-    background-color: #e2e8f0;    
-}
-.main-body {
-    padding: 15px;
-}
-.card {
-    box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06);
-}
-
-.card {
-    position: relative;
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+  }
+  header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0 100px;
+    background: #262626;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  header .logo {
+    color: #fff;
+    height: 50px;
+    line-height: 50px;
+    font-size: 24px;
+    float: left;
+    font-weight: bold;
+  }
+  header nav {
+    float: right;
+  }
+  header nav ul {
+    margin: 0;
+    padding: 0;
     display: flex;
-    flex-direction: column;
-    min-width: 0;
-    word-wrap: break-word;
-    background-color: #fff;
-    background-clip: border-box;
-    border: 0 solid rgba(0,0,0,.125);
-    border-radius: .25rem;
-}
-
-.card-body {
-    flex: 1 1 auto;
-    min-height: 1px;
-    padding: 1rem;
-}
-
-.gutters-sm {
-    margin-right: -8px;
-    margin-left: -8px;
-}
-
-.gutters-sm>.col, .gutters-sm>[class*=col-] {
-    padding-right: 8px;
-    padding-left: 8px;
-}
-.mb-3, .my-3 {
-    margin-bottom: 1rem!important;
-}
-
-.bg-gray-300 {
-    background-color: #e2e8f0;
-}
-.h-100 {
-    height: 100%!important;
-}
-.shadow-none {
-    box-shadow: none!important;
-}
+  }
+  header nav ul li {
+    list-style: none;
+  }
+  header nav ul li a {
+    height: 50px;
+    line-height: 50px;
+    padding: 0 20px;
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    text-transform: uppercase;
+  }
+  header nav ul li a:hover,
+  header nav ul li a.active {
+    color: #fff;
+    background: #2196f3;
+  }
+  .menu_toggle {
+    color: #fff;
+    float: right;
+    line-height: 50px;
+    font-size: 24px;
+    cursor: pointer;
+    display: none;
+  }
+  @media (max-width: 991px) {
+    header {
+      padding: 0 20px;
+    }
+    .menu_toggle {
+      display: block;
+    }
+    header nav {
+      /*display: none;*/
+      position: absolute;
+      width: 100%;
+      height: calc(100vh - 50px);
+      background: #333;
+      top: 50px;
+      left: -100%;
+      transition: 0.5s;
+      z-index: 1000;
+    }
+    header nav.active {
+      left: 0;
+    }
+    header nav ul {
+      display: block;
+      text-align: center;
+    }
+    header nav ul li a {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    }
