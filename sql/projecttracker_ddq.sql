@@ -9,8 +9,9 @@ CREATE TABLE Employees(
 ) ENGINE=InnoDB;
 
 INSERT INTO Employees(firstName, lastName)
+VALUES ("Sarah", "Bell");
 VALUES ("Jared", "Payne");
-
+VALUES ("Peanut", "Hamper");
 
 DROP TABLE IF EXISTS Developers;
 CREATE TABLE Developers (
@@ -23,7 +24,7 @@ CREATE TABLE Developers (
 
 LOCK TABLES Developers WRITE;
 INSERT INTO Developers (employeeID)
-VALUES (1);
+VALUES (1),(2);
 UNLOCK TABLES;
 
 
@@ -39,7 +40,7 @@ CREATE TABLE Managers (
 
 LOCK TABLES Managers WRITE;
 INSERT INTO Managers(employeeID, managementStyle)
-VALUES (1, 'Tyrant');
+VALUES (1, 'Zen');
 UNLOCK TABLES;
 
 
@@ -47,7 +48,7 @@ DROP TABLE IF EXISTS AssignedTasks;
 CREATE TABLE AssignedTasks (
   developerID int(11) NOT NULL,
   taskID int(11) NOT NULL,
-  effectiveness int(11) DEFAULT NULL,
+  effectiveness varchar(255) DEFAULT NULL,
   satisfaction varchar(255) DEFAULT NULL,
   PRIMARY KEY (developerID, taskID),
   CONSTRAINT assignedtasks_ibfk_1 FOREIGN KEY (developerID) REFERENCES Developers(developerID),
@@ -56,7 +57,8 @@ CREATE TABLE AssignedTasks (
 
 LOCK TABLES AssignedTasks WRITE;
 INSERT INTO AssignedTasks (developerID, taskID, effectiveness, satisfaction)
-VALUES (1, 1, 3, 5);
+VALUES (1, 1, 'Very Effective', 'Very Satisfied');
+VALUES (2, 2, 'Very Effective', 'Very Satisfied');
 UNLOCK TABLES;
 
 
@@ -75,7 +77,8 @@ CREATE TABLE Tasks (
 
 LOCK TABLES Tasks WRITE;
 INSERT INTO Tasks(projectID, title, taskDetails, dueDate, completed)
-VALUES (1, 'MoonTask', 'MoonTaskDetails', '', 0);
+VALUES (1, 'P1 SunTask', 'SunTaskDetails', '', 0);
+VALUES (1, 'P1 MoonTask', 'MoonTaskDetails', '', 0);
 UNLOCK TABLES;
 
 
