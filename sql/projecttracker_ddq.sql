@@ -67,14 +67,14 @@ DESCRIBE Employees;
 CREATE TABLE Managers (
   managerID int(11) NOT NULL AUTO_INCREMENT,
   employeeID int(11) NOT NULL,
-  managementStyle varchar(255) DEFAULT NULL,
+  managementStyle int(11) DEFAULT NULL,
   PRIMARY KEY (managerID),
   CONSTRAINT managers_ibfk_1 FOREIGN KEY (employeeID) REFERENCES Employees (employeeID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 LOCK TABLES Managers WRITE;
 INSERT INTO Managers(employeeID, managementStyle)
-VALUES (1, 'Zen'), (2, 'Tyrant');
+VALUES (1, 1), (2, 2);
 UNLOCK TABLES;
 
 DESCRIBE Managers;
@@ -114,8 +114,7 @@ DESCRIBE Developers;
 CREATE TABLE AssignedTasks (
   developerID int(11) NOT NULL,
   taskID int(11) NOT NULL,
-  effectiveness varchar(255) DEFAULT NULL,
-  satisfaction varchar(255) DEFAULT NULL,
+  satisfaction int(11) DEFAULT NULL,
   PRIMARY KEY (developerID, taskID),
   CONSTRAINT assignedtasks_ibfk_1 FOREIGN KEY (developerID) REFERENCES Developers(developerID),
   CONSTRAINT assignedtasks_ibfk_2 FOREIGN KEY (taskID) REFERENCES Tasks(taskID)
