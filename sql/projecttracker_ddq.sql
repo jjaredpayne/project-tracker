@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS ManagedProjects;
 DROP TABLE IF EXISTS Developers;
 SET FOREIGN_KEY_CHECKS = 1;
 
-
+ 
 CREATE TABLE Projects (
   projectID int(11) NOT NULL AUTO_INCREMENT,
   title varchar(255) NOT NULL,
