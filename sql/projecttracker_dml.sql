@@ -8,11 +8,74 @@ INSERT INTO AssignedTasks
 INSERT INTO ManagedProjects
 
 -- SELECT queries
+-- This query will generate the Project List page.
+SELECT 
+    title, 
+    CONCAT(Employees.firstName, ' ', Employees.lastName), 
+    percentComplete, 
+    projectStatus, 
+    plannedEnd 
+FROM Projects
+JOIN ManagedProjects ON
+    ManagedProjects.projectID = Projects.projectID
+JOIN Managers ON
+    Managers.managerID = ManagedProjects.managerID
+JOIN Employees ON
+    Managers.employeeID = Employees.employeeID;
 
-SELECT FROM Projects
-SELECT FROM Tasks
+-- This query will generate the Project page.
+
+-- Projet Header Info
+SELECT 
+    title, 
+    CONCAT(Employees.firstName, ' ', Employees.lastName), 
+    percentComplete, 
+    projectStatus, 
+    plannedEnd 
+FROM Projects
+JOIN ManagedProjects ON
+    ManagedProjects.projectID = Projects.projectID
+JOIN Managers ON
+    Managers.managerID = ManagedProjects.managerID
+JOIN Employees ON
+    Managers.employeeID = Employees.employeeID
+WHERE 
+    projectID = :projectID_selected_from_GETreq;
+
+-- Task List
+SELECT 
+    title,
+    taskDetails,
+    CONCAT(Employees.firstName, ' ', Employees.lastName), 
+    dueDate
+FROM Tasks 
+JOIN AssignedTasks ON
+    AssignedTasks.taskID = Tasks.taskID
+JOIN Developers ON
+    Developers.developerID = AssignedTasks.developerID
+JOIN Employees ON
+    Employees.employeeID = Developers.employeeID
+WHERE projectID = :projectID_selected_from_GETreq
+    AND completed = 0;
+
+-- This query will generate the profile
 SELECT FROM Managers
-SELECT FROM AssignedTasks
+
+-- This query will generate the TaskList page.
+SELECT 
+    title,
+    taskDetails,
+    CONCAT(Employees.firstName, ' ', Employees.lastName), 
+    dueDate
+FROM Tasks 
+JOIN AssignedTasks ON
+    AssignedTasks.taskID = Tasks.taskID
+JOIN Developers ON
+    Developers.developerID = AssignedTasks.developerID
+JOIN Employees ON
+    Employees.employeeID = Developers.employeeID
+WHERE employeeID = :employeeID_selected_from_GETreq
+    AND completed = 0;
 
 -- DELETE queries
 -- Project Deletion needs to delete from multiple tables
