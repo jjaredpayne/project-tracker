@@ -44,10 +44,13 @@ WHERE
 
 -- Task List
 SELECT 
+    taskID,
     title,
     taskDetails,
-    CONCAT(Employees.firstName, ' ', Employees.lastName), 
-    dueDate
+    AssignedTasks.developerID AS "developerID",
+    CONCAT(Employees.firstName, ' ', Employees.lastName) AS "owner", 
+    dueDate,
+    AssignedTasks.satisfaction AS "satisfaction"
 FROM Tasks 
 JOIN AssignedTasks ON
     AssignedTasks.taskID = Tasks.taskID

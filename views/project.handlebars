@@ -29,47 +29,101 @@
   </header>
     
 <!-- Page Content -->
-  <div class = "content">
-  	<div class = "search">
-  		<h2> Find Trails </h2>
-  		<form method="POST" action = "/trails">
-  			<input type = "text" name = "zipcode" placeholder ="Enter Your Zip Code"> </input>
-  			<!-- Get the location of the device-->
-  			<input type = "submit"> </input>
-  		</form>
+<!-- NEED TO TURN INTO A LEGIT FORM FOR SUBMISSION TO INSERT. -->
+  <div class="profile-container" style="margin-top:80px">
+    <!-- Script will run here to build the profile. -->
+    <!-- Options will include an ability to modify profile. -->
+    <div class="intro">
+      <H5> A list of project tasks. </H5>
+    </div>
+    <div class="profile-creator">
+      <div class="row">
+        <div class="col-md-6 gy-3">
+          <form class="row g-3">
+            <div class="col-md-6">
+              <span class="input-group-text" for="basic=inputTaskTitle">Task Title</label>
+                <input type="Text" class="form-control" id="inputTaskTitle">
+            </div>
+            <div class="col-md-6">
+              <span class="input-group-text" for="basic=inputComments">Comments</label>
+                <input type="Text" class="form-control" id="inputComments">
+            </div>
+            <div class="col-md-12">
+              <span class="input-group-text" for="basic=inputOwner">Owner</label>
+                <input type="Text" class="form-control" id="inputOwner">
+            </div>
+            <div class="col-md-12">
+              <span class="input-group-text" for="basic=inputDueDate">Due Date</label>
+                <input type="Date" class="form-control" id="inputDuedate">
+                </select>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <br>
 
-	  <div class = "forYouFilter">
-		<label for="forYouDropDown">Just For You:</label>
-		<select name="forYouDropDown" id="forYouDropDown">
-		   <option value=""></option>
-		   <option value="easy">Easy & Chill</option>
-		   <option value="medium">At My Level</option>
-		   <option value="hard">Challenge Me</option>
-		 </select>
-	  </div>
-		  
-  	<div class = "trailList">
-      {{#each trailList}}
-    		<div class = "trail">
-              <b>{{this.name}}</b>
-              <span>Trail Length: {{this.length}}</span>
-              <span>Trail Difficulty: {{this.difficulty}}</span>
-              <button class="expandButton"> More Information </button>
-              <div class="hiddenDiv">
-                <span>{{this.description}}</span>
-                <a target = "_blank" href = {{this.location.navigate}}> Navigate to this trail</a>
-              </div>
-    		</div>
-      {{/each}}
-  	</div>
-  </div>
-    {{#each js}}
-      <link href="./js/{{this}}", rel="stylesheet">
-    {{/each}}
+	<H5> A list of existing tasks by project.</H5>
+	<!-- need to turn into a sort of filter for results.-->
+    <div class="col-md-4">
+      <div class="input-group rounded">
+        <input type="search" class="form-control rounded" placeholder="Search by Task Title"
+          aria-label="Search" aria-describedby="search-addon" />
+        <span class="input-group-text border-0" id="search-addon">
+          <i class="fas fa-search"></i>
+        </span>
+      </div>
+    </div>
 
+	<!-- need to modify so it puts an editable form that can be modified?-->	  
+	<div class="col-sm-8">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Task Title</th>
+              <th scope="col">Comments</th>
+              <th scope="col">Owner</th>
+              <th scope="col">Due Date</th>
+              <th scope="col">Satisfaction</th>
+              <th scope="col">Mark Complete</th>
+              <th scope="col">Delete</th>
+              <th scope="col">Edit</th>
+            </tr>
+		  </thead>
+		  <tbody>
+			  {{#each Task}}
+			  <tr id="{{this.taskId}}">
+				<td class="title" id="{{this.taskID}}"><form id="{{this.taskID}}"><input type="text" disabled=true name="title">{{this.title}}</input></form></td>
+              	<td class="details" id="{{this.taskID}}"><form id="{{this.taskID}}"><input type="text" disabled=true name="taskDetails">{{this.taskDetails}}</input></form></td>
+              	<td class="owner" id="{{this.taskID}}"><form id="{{this.taskID}}"><input type="text" disabled=true name="{{this.developerId}}">{{this.owner}}</input></form></td>
+              	<td class="due-date" id="{{this.taskID}}"><form id="{{this.taskID}}"><input type="text" disabled=true name="dueDate">{{this.dueDate}}</input></form></td>
+              	<td class="satisfaction" id="{{this.taskID}}"><form id="{{this.taskID}}">		  
+                <select class="form-control-sm" id="inputSatisfaction">
+                <option selected>{{this.satisfaction}}</option>
+                <option value="1">Fully Satisfied</option>
+                <option value="2">Rewarding</option>
+                <option value="3">Not Rewarding</option>
+                <option value="4">Dead Inside</option>
+              </select></form>
+            </td>
+              <td><button id="complete" value="{{this.taskID}}" class="btn btn-outline-secondary mb-2 btn-sm tableButton"
+                  id="tableButton">Mark Complete</button></td>
+              <td><button id="delete" value="{{this.taskID}}" class="btn btn-outline-secondary mb-2 btn-sm tableButton"
+                  id="tableButton">Delete</button></td>
+              <td><button type="edit" value="{{this.taskID}}" class="btn btn-outline-secondary mb-2 btn-sm tableButton"
+                  id="tableButton">Edit</button></td>
+			  </tr>
+			  {{/each}}
+		  </tbody>
+
+	</div>
+
+<!--
+	Commenting out scripts for the moment as those don't exist.
 <script src="/js/user.js"></script>
 <script src="/js/moreTrailInfo.js"></script>
 <script src="/js/trailFilter.js"></script>
+-->
 
 </body>
 
