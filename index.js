@@ -34,22 +34,26 @@ module.exports.pool = pool;
 app.get('/', function (req, res, next) {
   res.render('index');
 });
+app.get('/index.html', function (req, res, next) {
+  res.render('index');
+});
 
-app.get('/profile', function (req, res, next) {
+app.get('/profile.html', function (req, res, next) {
   res.render('profile');
 });
 
-app.get('/project',function(req,res,next){
-  res.render('project');
-});
-
-app.get('/projectlist',function(req,res,next){
+app.get('/projectlist.html',function(req,res,next){
   res.render('projectlist');
 });
 
-app.get('/registeremployee',function(req,res,next){
+app.get('/registeremployee.html',function(req,res,next){
   res.render('registeremployee');
 });
+
+app.get('/tasklist.html',function(req,res,next){
+  res.render('tasklist');
+});
+
 
 app.listen(app.get('port'), function () {
     console.log('Express started on http://flip3.engr.oregonstate.edu' + app.get('port') + '; press Ctrl-C to terminate.');
