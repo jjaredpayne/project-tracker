@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(session({secret: 'SuperSecretPassword'}));
 app.use('/css',express.static('css'));
-app.use('/css',express.static('images'));
+app.use('/images',express.static('images'));
 app.use('/vendor',express.static('vendor'));
 app.use('/js',express.static('js'));
 
