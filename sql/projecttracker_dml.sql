@@ -1,11 +1,38 @@
 -- INSERT queries
-INSERT INTO Employees
-INSERT INTO Projects
-INSERT INTO Tasks
-INSERT INTO Managers
-INSERT INTO Developers
-INSERT INTO AssignedTasks
-INSERT INTO ManagedProjects
+LOCK TABLES Employees WRITE;
+INSERT INTO Employees(firstName, lastName)
+VALUES (:firstNameInput, :lastNameInput);
+UNLOCK TABLES;
+
+LOCK TABLES Projects WRITE;
+INSERT INTO Projects(title, percentComplete, plannedEnd, projectStatus)
+VALUES (:titleInput, :percentCompleteInput, :plannedEndInput, :projectStatusInput);
+UNLOCK TABLES;
+
+LOCK TABLES Tasks WRITE;
+INSERT INTO Tasks(projectID, title, taskDetails, dueDate, completed)
+VALUES (:projectIDInput, :titleInput, :taskDetailsInput, :dueDateInput, :completedInput);
+UNLOCK TABLES;
+
+LOCK TABLES Managers WRITE;
+INSERT INTO Managers(employeeID, managementStyle)
+VALUES (:employeeIDInput, :managementStyleInput);
+UNLOCK TABLES;
+
+LOCK TABLES Developers WRITE;
+INSERT INTO Developers(employeeID)
+VALUES (:employeeIDInput);
+UNLOCK TABLES;
+
+LOCK TABLES AssignedTasks WRITE;
+INSERT INTO AssignedTasks(developerID, taskID)
+VALUES (:developerIDInput, :taskIDInput);
+UNLOCK TABLES;
+
+LOCK TABLES ManagedProjects WRITE;
+INSERT INTO ManagedProjects(managerID, projectID)
+VALUES (:managerIDInput, :projectIDInput);
+UNLOCK TABLES;
 
 -- SELECT queries
 -- This query will generate the Project List page.
@@ -109,6 +136,18 @@ DELETE FROM ManagedProjects WHERE projectID= :projectId_selected_from_projectlis
 DELETE FROM Developers WHERE developerID = :developerID_selected_from_profile
 
 -- UPDATE queries
-UPDATE Projects
-UPDATE Tasks
-UPDATE Employees
+UPDATE Projects SET title = :titleInput WHERE projectID = :projectIDInput;
+UPDATE Projects SET plannedEnd = :plannedEndInput WHERE projectID = :projectIDInput;
+UPDATE Projects SET projectStatus = :projectStatusInput WHERE projectID = :projectIDInput;
+
+UPDATE Tasks SET title = :titleInput WHERE taskID = :taskIDInput;
+UPDATE Tasks SET taskDetails = :titleDetailsInput WHERE taskID = :taskIDInput;
+UPDATE Tasks SET dueDate = :dueDateInput WHERE taskID = :taskIDInput;
+UPDATE Tasks SET complete = :completeInput WHERE taskID = :taskIDInput;
+
+UPDATE Employees SET firstName = :firstNameInput WHERE employeeID = :employeeIDInput;
+UPDATE Employees SET lastName = :lastNameInput WHERE employeeID = :employeeIDInput;
+
+UPDATE Managers SET managementStyle = :managementStyleInput WHERE managerID = :managerIDInput;
+
+UPDATE AssignedTasks SET satisfaction = :satsifactionInput WHERE deverloperID = :developerIDInput;
