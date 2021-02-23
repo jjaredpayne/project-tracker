@@ -20,15 +20,6 @@ app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 app.set('port', 8916);
 
-//Create mysql pool
-var pool = mysql.createPool({
-    connectionLimit: 10,
-    host: 'classmysql.engr.oregonstate.edu',
-    user: 'cs290_payneje',
-    password: 'Seattleites',
-    database: 'cs290_payneje'
-});
-
 module.exports.pool = pool;
 
 app.get('/', function (req, res, next) {
