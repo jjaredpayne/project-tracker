@@ -1,0 +1,83 @@
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+  <script src="https://kit.fontawesome.com/8e55adc5cc.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" type="text/css" href="/profile.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project Tracker - Employee Profiles</title>
+</head>
+
+<body>
+  <header>
+    <div class="logo">PROJECT TRACKER</div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#" class="active">Register Employee</a></li>
+        <li><a href="profile.html">Employee Profiles</a></li>
+        <li><a href="projectlist.html">Projects</a></li>
+        <li><a href="tasklist.html">Tasks</a></li>
+      </ul>
+    </nav>
+    <div class="menu_toggle">
+      <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+  </header>
+
+  <div class="profile-creation-container">
+    <div class="intro">
+      <H5>Please fill out the form to register Employees.</H5>
+    </div>
+    <div class="profile-creator">
+      <div class="row">
+        <div class="col-md-6 gy-3">
+          <form class="row g-3">
+            <div class="col-md-6">
+              <span class="input-group-text" for="basic=inputFirstName">First Name:</label>
+                <input type="Text" class="form-control" id="inputFirstName">
+            </div>
+            <div class="col-md-6">
+              <span class="input-group-text" for="basic=inputLastName">Last Name:</label>
+                <input type="Text" class="form-control" id="inputLastName">
+            </div>
+            <div class="col-md-12">
+              <span class="input-group-text" for="basic=inputWorkRole">Work Role:</label>
+                <select class="form-select" id="inputWorkRole">
+                  <option selected> Developer</option>
+                  <option value="1">Developer</option>
+                  <option value="2">Manager</option>
+                  <option value="3">Staff</option>
+                </select>
+            </div>
+            <div class="col-md-12">
+              <span class="input-group-text" for="basic=inputWorkRole">Management Style:</label>
+                <select class="form-select" id="inputWorkRole" disabled>
+                  <option value="1"> Tyrant</option>
+                  <option value="2">Nurturer</option>
+                  <option value="3">Anything Goes</option>
+                </select>
+            </div>
+            <div class="col-12">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="gridCheck" disabled>
+                <label class="form-check-label" for="gridCheck">
+                  Click this box to enable a surprise!
+                </label>
+              </div>
+            </div>
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary">Register Employee</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <script src="/jquery-3.2.1.min.js"></script>
+  <!--===============================================================================================-->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+  <!--===============================================================================================-->
+  <script src="/main.js"></script>
+
+  <script src="/tableManip.js"></script>
