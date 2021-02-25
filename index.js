@@ -53,8 +53,9 @@ app.get('/profile.html', function (req, res, next) {
       }
       context.sqlresults = JSON.stringify(rows);
       console.log('node:' + context.sqlresults);
-      res.send(context.sqlresults);
+      res.render('profile', context);
   });
+  
 });
 
 app.get('/projectlist.html',function(req,res,next){
