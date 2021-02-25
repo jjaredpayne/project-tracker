@@ -1,5 +1,5 @@
 var Project = require('./project.js').Project;
-var ProjectlList = require('./project.js').ProjectList;
+var ProjectList = require('./project.js').ProjectList;
 var https = require('https');
 
 class Project_API {
