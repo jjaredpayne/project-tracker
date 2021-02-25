@@ -39,7 +39,7 @@ class ProjectList{
 	getProject(index){
 		return this.projects[index];
 	}
-	deleteTrail(index){
+	deleteProject(index){
 		for(var i = index; i < projects.length-1; i++){
 			this.projects[i] = this.projects[i+1];
 		}
