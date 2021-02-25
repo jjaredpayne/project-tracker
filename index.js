@@ -44,18 +44,23 @@ app.get('/registeremployee.html',function(req,res,next){
 });
 
 app.get('/profile.html', function (req, res, next) {
-  console.log('showing table');
-  var context = {};
-  pool.query('SELECT * FROM Employees', function (err, rows, fields) {
-      if (err) {
-          next(err);
-          return;
-      }
-      context.sqlresults = JSON.stringify(rows);
-      console.log('node:' + context.sqlresults);
+  let context = {};
+  //SELECT all employee profiles when page is first loaded.
+  if (!req.session.active || req.session.active) {
+          var createString = "SELECT *" + "FROM Employees;"
+          pool.query(createString, function (err, results) {
+              context.sqlresults = results
+              res.render('profile',context); //render handlebars
+              req.session.active = 'yes';
+              console.log('* Employees Selected console');
+          });
+      return;
+  }
+  //Renders the page each subsequent time the page is loaded
+  else {
+    console.log('else profile');
       res.render('profile', context);
-  });
-  
+  }
 });
 
 app.get('/projectlist.html',function(req,res,next){
