@@ -31,7 +31,9 @@ JOIN Employees ON
   Employees.employeeID = Developers.employeeID
 WHERE projectID = ?
   AND completed = 0;"`
-const insertQuery = "INSERT INTO Project (`name`, `reps`, `weight`, `unit`, `date`) VALUES (?,?,?,?,?)";
+const insertProjectQuery = "INSERT INTO Projects(`title`, `percentComplete`, `plannedEnd`, `projectStatus`) VALUES (?,?,?,?);"
+const insertManagedProjectQuery = "INSERT INTO ManagedProjects (`projectID`, `managerID`) VALUES ((SELECT * FROM Projects WHERE projectId=(SELECT max(id) FROM TableName)),?);"
+const insertTaskQuery = "INSERT INTO Tasks (`projectID`, `title`, `taskDetails`, `dueDate`) VALUES (?,?,?,?);"
 //const updateQuery = "UPDATE workouts SET name=?, reps=?, weight=?, unit=?, date=? WHERE id=? ";
 //const deleteQuery = "DELETE FROM workouts WHERE id=?";
 const dropTableQuery = "DROP TABLE IF EXISTS workouts";
@@ -41,7 +43,7 @@ const makeTableQuery = `CREATE TABLE workouts(
                         reps INT,
                         weight INT,
                         unit VARCHAR(255) NOT NULL,
-                        date DATE);`;
+                        date DATE);`
 
 
 var app = express();
@@ -81,6 +83,40 @@ app.get('/project.html',function(req,res,next){
     }
     context.results = JSON.stringify(rows);
     res.send(context);
+  });
+});
+
+app.post('/projectlist.html',function(req,res,next){
+  var {title, percentComplete, plannedEnd, projectStatus, userID} = req.body;
+  mysql.pool.query(insertProjectQuery, 
+    [title, percentComplete, plannedEnd, projectstatus], 
+    (err, result) =>{
+    if(err){
+      next(err);
+      return;
+    }
+    mysql.pool.query(insertManagedProjectQuery, 
+      [userID], 
+      (err, result) =>{
+      if(err){
+        next(err);
+        return;
+      }
+    //need to write something that will refresh the data on the front end based on the page
+    //getAllData();
+  });
+});
+
+app.post('/project.html',function(req,res,next){
+  var {projectID, title, taskDetails, dueDate} = req.body;
+  mysql.pool.query(insertTasksQuery, 
+    [projectID, title, taskDetails, dueDate], 
+    (err, result) =>{
+    if(err){
+      next(err);
+      return;
+    }
+    //getAllData();
   });
 });
 
