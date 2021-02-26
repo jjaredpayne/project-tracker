@@ -46,12 +46,11 @@
                   <option selected> Developer</option>
                   <option value="1">Developer</option>
                   <option value="2">Manager</option>
-                  <option value="3">Staff</option>
                 </select>
             </div>
             <div class="col-md-12">
               <span class="input-group-text" for="basic=inputWorkRole">Management Style:</label>
-                <select class="form-select" id="inputWorkRole" disabled>
+                <select class="form-select" id="inputManagementStyle" disabled>
                   <option value="1"> Tyrant</option>
                   <option value="2">Nurturer</option>
                   <option value="3">Anything Goes</option>
@@ -66,7 +65,7 @@
               </div>
             </div>
             <div class="col-12">
-              <button type="submit" class="btn btn-primary">Register Employee</button>
+              <button type="submit" class="btn btn-primary" id="registerEmployees" onclick="registerEmployee()">Register Employee</button>
             </div>
           </form>
         </div>
@@ -74,10 +73,5 @@
     </div>
   </div>
 
-    <script src="/jquery-3.2.1.min.js"></script>
-  <!--===============================================================================================-->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
-  <!--===============================================================================================-->
-  <script src="/main.js"></script>
 
-  <script src="/tableManip.js"></script>
+<script type="text/javascript" src="registeremployee.js" language="javascript"></script>

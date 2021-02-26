@@ -34,28 +34,20 @@
       <div class="row">
         <div class = "col-md-6 gy-3">
           <form class="row g-3">
-            <div class="col-md-6">
-              <span class="input-group-text" for="basic=inputFirstName">First Name:</label>
+            <div class="col-md-6" id="A">
+              <span class="input-group-text" for="basic=inputFirstName">First Name: </label>
               <input type="Text" class="form-control" id="inputFirstName">
             </div>
             <div class="col-md-6">
-              <span class="input-group-text" for="basic=inputLastName">Last Name:</label>
+              <span class="input-group-text" for="basic=inputLastName">Last Name: </label>
               <input type="Text" class="form-control" id="inputLastName">
             </div>
             <div class="col-md-12">
-              <span class="input-group-text" for="basic=inputWorkRole">Work Role:</label>
+              <span class="input-group-text" for="basic=inputWorkRole">Work Role: </label>
               <select class="form-select" id="inputWorkRole">
                   <option selected>Manager</option>
                   <option value="1">Developer</option>
                   <option value="2">Manager</option>
-              </select>
-            </div>
-            <div class="col-md-12">
-              <span class="input-group-text" for="basic=inputManagementStyle">Management Style:</label>
-              <select class="form-select" id="inputManagementStyle">
-                  <option value="1">Tyrant</option>
-                  <option value="2">Nurturer</option>
-                  <option value="3">Anything Goes</option>
               </select>
             </div>
           </form>
@@ -93,11 +85,13 @@
                 <td>{{firstName}}</td>
                 <td>{{lastName}}</td>
                 <td>{{totalTasks}}</td>
-                <td><button type="submit" class="btn btn-outline-secondary mb-2 btn-sm tableButton" id="tableButton">Delete</button></td>
-                <td><button type="submit" class="btn btn-outline-secondary mb-2 btn-sm tableButton" id="tableButton">Edit</button></td>
+                <td><button type="submit" class="btn btn-outline-secondary mb-2 btn-sm tableButton" id="deleteButton{{employeeID}}" onclick="deleteRow({{employeeID}})">Delete</button></td>
+                <td><button type="submit" class="btn btn-outline-secondary mb-2 btn-sm tableButton" id="editButton{{employeeID}}"onclick="editRow({{employeeID}})">Edit</button></td>
             </tr>
             {{/each}}
         </tbody>
       </table>
     </div>
   </div>
+
+  <script src="/profile.js"></script>

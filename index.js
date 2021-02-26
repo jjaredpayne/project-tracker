@@ -47,9 +47,9 @@ app.get('/profile.html', function (req, res, next) {
   let context = {};
   //SELECT all employee profiles when page is first loaded.
   if (!req.session.active || req.session.active) {
-          var createString = "SELECT *" + "FROM Employees;"
+          var createString = "SELECT * FROM Employees;"
           pool.query(createString, function (err, results) {
-              context.sqlresults = results
+              context.sqlresults = results;
               res.render('profile',context); //render handlebars
               req.session.active = 'yes';
               console.log('* Employees Selected console');
@@ -63,6 +63,39 @@ app.get('/profile.html', function (req, res, next) {
   }
 });
 
+app.get('/insertmanager', function (req, res, next) {
+  console.log("insert manager")
+  var context = {};
+
+  pool.query("INSERT INTO Employees (`lastName`, `firstName`) VALUES (?, ?, ?, ?, ?)", [req.query.lastName, req.query.firstName, req.query.managementStyle], function (err, result) {
+      if (err) {
+          next(err);
+          return;
+      }
+      context.results = "Inserted id " + result.insertId;
+      console.log('insert context' + context);
+      res.send(context);
+  });
+  
+});
+
+app.get('/insertdeveloper', function (req, res, next) {
+  console.log("insert developer")
+  var context = {};
+
+  pool.query("INSERT INTO Employees (`lastName`, `firstName`) VALUES (?,?)", [req.query.lastName, req.query.firstName], function (err, result) {
+      if (err) {
+          next(err);
+          return;
+      }
+      context.results = "Inserted id " + result.insertId;
+      console.log('insert context' + context);
+      res.send(context);
+  });
+});
+
+
+
 app.get('/projectlist.html',function(req,res,next){
   res.render('projectlist');
 });
@@ -73,7 +106,7 @@ app.get('/tasklist.html',function(req,res,next){
 
 app.listen(app.get('port'), function () {
   console.log('Express started on http://flip3.engr.oregonstate.edu' + app.get('port') + '; press Ctrl-C to terminate.');
-  });
+});
 
 app.use(function(req,res){
   res.status(404);
