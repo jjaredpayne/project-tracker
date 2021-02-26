@@ -63,11 +63,28 @@ app.get('/profile.html', function (req, res, next) {
   }
 });
 
+app.get('/insertemployee', function (req, res, next) {
+  console.log("insert employee")
+  var context = {};
+
+  pool.query("INSERT INTO Employees (`lastName`, `firstName`) VALUES (?, ?)", [req.query.lastName, req.query.firstName], function (err, result) {
+      if (err) {
+          next(err);
+          return;
+      }
+      context.results = "Inserted id " + result.insertId;
+      console.log('insert context' + context);
+      res.send(context);
+  });
+  
+});
+
 app.get('/insertmanager', function (req, res, next) {
   console.log("insert manager")
   var context = {};
-
-  pool.query("INSERT INTO Employees (`lastName`, `firstName`) VALUES (?, ?, ?, ?, ?)", [req.query.lastName, req.query.firstName, req.query.managementStyle], function (err, result) {
+  reqLastName = req.query.lastName;
+  reqFirstName = req.query.firstName;
+  pool.query("INSERT INTO Managers (employeeID) SELECT employeeID FROM Employees WHERE lastName = '" + req.query.lastName + "' AND firstName = '" + req.query.firstName + "';", function (err, result) {
       if (err) {
           next(err);
           return;
@@ -82,8 +99,7 @@ app.get('/insertmanager', function (req, res, next) {
 app.get('/insertdeveloper', function (req, res, next) {
   console.log("insert developer")
   var context = {};
-
-  pool.query("INSERT INTO Employees (`lastName`, `firstName`) VALUES (?,?)", [req.query.lastName, req.query.firstName], function (err, result) {
+  pool.query("INSERT INTO Developers (employeeID) SELECT employeeID FROM Employees WHERE lastName = '" + req.query.lastName + "' AND firstName = '" + req.query.firstName + "';", function (err, result) {
       if (err) {
           next(err);
           return;
