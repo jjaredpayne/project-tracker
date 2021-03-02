@@ -45,33 +45,26 @@ app.get('/registeremployee.html',function(req,res,next){
 
 app.get('/profile.html', function (req, res, next) {
   let context = {};
-  // res.render('profile');
   var selectString = "SELECT * FROM Employees JOIN Managers ON Employees.employeeID = Managers.employeeID;"
   pool.query(selectString, function (err, results) {
     context.sqlresults = results;
-//      console.log(results);
     res.render('profile', context);
   });
 });
 
 app.post('/profile.html', function (req, res, next) {
   let context = {};
-  console.log(req.body);
   if(req.body.workRole === "1"){
-    console.log("displayDevelopers")
     var selectString = "SELECT * FROM Employees JOIN Developers ON Employees.employeeID = Developers.employeeID;"
     pool.query(selectString, function (err, rows, results) {
       context.sqlresults = JSON.parse(JSON.stringify(rows));
-      console.log(context.sqlresults);
       res.render('profile', context);
     });
   }
   else{
-    console.log("displayManagers "+req.body.workRole)
     var selectString = "SELECT * FROM Employees JOIN Managers ON Employees.employeeID = Managers.employeeID;"
     pool.query(selectString, function (err, rows, fields) {
       context.sqlresults = JSON.parse(JSON.stringify(rows));
-//      console.log(context.sqlresults);
       res.render('profile', context);
     });
   }
@@ -79,12 +72,19 @@ app.post('/profile.html', function (req, res, next) {
 
 app.get('/deleteRow', function (req, res, next) {
   let context = {};
-  // res.render('profile');
-  var deleteString = "DELETE FROM Developers WHERE employeeID = ";
-  pool.query(deleteString + req.query.rowId, function (err, rows, results) {
-    console.log(results);
-    res.render('profile');
-  });
+  console.log(req.body);
+  if(req.body.workRole === "1"){
+    var deleteString = "DELETE FROM Developers WHERE employeeID = ";
+    pool.query(deleteString + req.query.rowId, function (err, rows, results) {
+      res.render('profile');
+    });
+  }
+  else{
+    var deleteString = "DELETE FROM Managers WHERE employeeID = ";
+    pool.query(deleteString + req.body.rowId, function (err, rows, results) {
+      res.render('profile');
+    });
+  }
 });
 
 app.get('/insertemployee', function (req, res, next) {

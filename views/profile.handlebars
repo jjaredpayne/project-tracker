@@ -79,10 +79,8 @@
               <td>{{this.firstName}}</td>
               <td>{{this.lastName}}</td>
               <td>{{this.totalTasks}}</td>
-              <td><button type="submit" class="btn btn-outline-secondary mb-2 btn-sm tableButton"
-                  id="deleteButton{{employeeID}}" onclick="deleteRow({{employeeID}})">Delete</button></td>
-              <td><button type="submit" class="btn btn-outline-secondary mb-2 btn-sm tableButton"
-                  id="editButton{{employeeID}}" onclick="editRow({{employeeID}})">Edit</button></td>
+              <td><button type="submit" class="btn btn-outline-secondary mb-2 btn-sm tableButton" id="deleteButton{{employeeID}}" action="delete" method="post" value="{{employeeID}}">Delete</button></td>
+              <td><button type="submit" class="btn btn-outline-secondary mb-2 btn-sm tableButton" id="editButton{{employeeID}}" onclick="{{employeeID}}">Edit</button></td>
             </tr>
             {{/each}}
           </tbody>
