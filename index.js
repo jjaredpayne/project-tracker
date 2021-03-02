@@ -45,64 +45,60 @@ app.get('/registeremployee.html',function(req,res,next){
 
 app.get('/profile.html', function (req, res, next) {
   let context = {};
-  console.log("displayDefault")
-  console.log("WorkRole" + req.query.workRole)
-   //SELECT all Developer profiles when page is first loaded.
+  res.render('profile');
+  // console.log("displayDefault")
+  // console.log("WorkRole" + req.query.workRole)
+  //  //SELECT all Developer profiles when page is first loaded.
+  // if(req.query.workRole === "1" || req.query.workRole === undefined){
+  //   var createString = "SELECT * FROM Employees JOIN Developers ON Employees.employeeID = Developers.employeeID;"
+  //   pool.query(createString, function (err, results) {
+  //     console.log(results);
+  //     context.sqlresults = results;
+  //     res.render('profile', context); //render handlebars
+  //     console.log('Finished Writing Developers');
+  //   });
+  //   return;
+  // }
+  // else if (req.query.workRole === "2"){
+  //   let context = {};
+  //   console.log("displayManagers")
+  //   var createString = "SELECT * FROM Employees JOIN Managers ON Employees.employeeID = Managers.employeeID;"
+  //   pool.query(createString, function (err, results) {
+  //     console.log(results);
+  //     context.sqlresults = results;
+  //     res.render('profile', context);
+  //     console.log('Finished Writing Managers');
+  //   });
+  //   return;
+  // }
+});
+
+app.get('/displayProfile', function (req, res, next) {
+  let context = {};
+  // if(req.query.firstName === null || req.query.lastName === null){
   if(req.query.workRole === "1" || req.query.workRole === undefined){
-    var createString = "SELECT * FROM Employees JOIN Developers ON Employees.employeeID = Developers.employeeID;"
-    pool.query(createString, function (err, results) {
-      console.log(results);
-      context.sqlresults = results;
-      res.render('profile', context); //render handlebars
-      console.log('Finished Writing Developers');
-    });
-    return;
-  }
-  else if (req.query.workRole === "2"){
     let context = {};
-    console.log("displayManagers")
-    var createString = "SELECT * FROM Employees JOIN Managers ON Employees.employeeID = Managers.employeeID;"
-    pool.query(createString, function (err, results) {
+    console.log("displayDevelopers")
+    var selectString = "SELECT * FROM Employees JOIN Developers ON Employees.employeeID = Developers.employeeID;"
+    pool.query(selectString, function (err, results) {
       console.log(results);
       context.sqlresults = results;
       res.render('profile', context);
-      console.log('Finished Writing Managers');
+    });
+    return;
+  }
+  else{
+    let context = {};
+    console.log("displayManagers")
+    var selectString = "SELECT * FROM Employees JOIN Managers ON Employees.employeeID = Managers.employeeID;"
+    pool.query(selectString, function (err, results) {
+      console.log(results);
+      context.sqlresults = results;
+      res.render('profile', context);
     });
     return;
   }
 });
-
-// app.get('/displayProfiles', function (req, res, next) {
-//   let context = {};
-//   // if(req.query.firstName === null || req.query.lastName === null){
-//     if(req.query.workRole === "1" || req.query.workRole === null){
-//       let context = {};
-//       console.log("displayDevelopers")
-//               var createString = "SELECT * FROM Employees JOIN Developers ON Employees.employeeID = Developers.employeeID;"
-//               pool.query(createString, function (err, results) {
-//                 console.log(results);
-//                 context.sqlresults = JSON.stringify(results);
-//                 console.log('node:' + context.sqlresults);
-//                 res.send(context.results);
-//               });
-//           return;
-//     }
-//     else{
-//       let context = {};
-//         console.log("displayManagers")
-//               var createString = "SELECT * FROM Employees JOIN Managers ON Employees.employeeID = Managers.employeeID;"
-//               pool.query(createString, function (err, results) {
-//                 console.log(results);
-//                 context.sqlresults = results;
-//                 console.log('node:' + context.sqlresults);
-//                 console.log('node:' + context);
-//                 res.send(context);
-//               });
-//           return;
-//     }
-//   // }
-// });
-
 
 app.get('/insertemployee', function (req, res, next) {
   console.log("insert employee")

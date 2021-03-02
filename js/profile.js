@@ -40,7 +40,7 @@ function displayEmployees(){
         payload.lastName = document.getElementById('inputLastName').value;
         console.log(payload);
         
-        reqURL = nodeURL + 'Profile.html' + '?firstName=' + payload.firstName + '&lastName=' + payload.lastName + '&workRole=' + payload.workRole;
+        reqURL = nodeURL + 'displayProfile' + '?firstName=' + payload.firstName + '&lastName=' + payload.lastName + '&workRole=' + payload.workRole;
         console.log(reqURL);
 
         //Name can't be empty.
@@ -50,8 +50,7 @@ function displayEmployees(){
             if (req.status >= 200 && req.status < 400) {
                 if (req.responseText !== '') {
                     console.log('response' + req.responseText);
-                    let response = req;
-                } else {
+                    let response = req.sqlresults;
                 }
             } else {
                 console.log("Error! " + req.statusText);
