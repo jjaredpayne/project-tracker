@@ -6,7 +6,7 @@ function deleteRow(idButton) {
         document.getElementById('deleteButton' + idButton).addEventListener('click', function (event) {
             var req = new XMLHttpRequest();
             
-            reqURL = nodeURL + 'delete' + '?rowId=' + idButton;
+            reqURL = nodeURL + 'deleteRow' + '?rowId=' + idButton;
             console.log('reqURL:', reqURL);
             req.open('GET', reqURL, true);
             req.addEventListener("load", function () {
@@ -29,6 +29,7 @@ function deleteRow(idButton) {
 };
 
 function displayEmployees(){
+    nodeURL = 'http://flip3.engr.oregonstate.edu:8916/'
     console.log("displayEmployees");
     return new Promise(function(resolve, reject){
         var req = new XMLHttpRequest();
@@ -41,7 +42,6 @@ function displayEmployees(){
         console.log(payload);
         
         reqURL = nodeURL + 'displayProfile' + '?firstName=' + payload.firstName + '&lastName=' + payload.lastName + '&workRole=' + payload.workRole;
-        console.log(reqURL);
 
         //Name can't be empty.
         console.log(reqURL);
@@ -50,7 +50,7 @@ function displayEmployees(){
             if (req.status >= 200 && req.status < 400) {
                 if (req.responseText !== '') {
                     console.log('response' + req.responseText);
-                    let response = req.sqlresults;
+                    let response = req;
                 }
             } else {
                 console.log("Error! " + req.statusText);
