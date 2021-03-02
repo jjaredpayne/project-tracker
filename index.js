@@ -70,21 +70,24 @@ app.post('/profile.html', function (req, res, next) {
   }
 });
 
-app.get('/deleteRow', function (req, res, next) {
+app.post('/deleteDeveloper', function (req, res, next) {
   let context = {};
-  console.log(req.body);
-  if(req.body.workRole === "1"){
+    console.log(req.body);
     var deleteString = "DELETE FROM Developers WHERE employeeID = ";
-    pool.query(deleteString + req.query.rowId, function (err, rows, results) {
+    pool.query(deleteString + req.body.rowId, function (err, rows, results) {
+      console.log("deleting" + req.body);
       res.render('profile');
     });
-  }
-  else{
+});
+
+app.post('/deleteManager', function (req, res, next) {
+  let context = {};
+    console.log(req.body);
     var deleteString = "DELETE FROM Managers WHERE employeeID = ";
     pool.query(deleteString + req.body.rowId, function (err, rows, results) {
+      console.log(err);
       res.render('profile');
     });
-  }
 });
 
 app.get('/insertemployee', function (req, res, next) {
