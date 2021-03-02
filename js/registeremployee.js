@@ -25,7 +25,6 @@ function registerEmployee(){
                         console.log(JSON.parse(req.responseText));
                         let response = JSON.parse(req.responseText);
                         console.log('response: ' + response.results);
-                        showTable();
                     } else {
                     }
                 } else {

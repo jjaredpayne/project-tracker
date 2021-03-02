@@ -43,11 +43,11 @@
               <input type="Text" class="form-control" id="inputLastName">
             </div>
             <div class="col-md-12">
-              <span class="input-group-text" for="basic=inputWorkRole">Work Role: </label>
+              <span class="input-group-text" for="basic=inputWorkRole">Display: </label>
               <select class="form-select" id="inputWorkRole">
-                  <option selected>Manager</option>
-                  <option value="1">Developer</option>
-                  <option value="2">Manager</option>
+                  <option value = "1" selected>Developers</option>
+                  <option value="1">Developers</option>
+                  <option value="2">Managers</option>
               </select>
             </div>
           </form>
@@ -55,8 +55,9 @@
       </div>
     </div>
     <br>
+    <button type="submit" class="btn btn-primary" id="displayEmployees" onclick="displayEmployees()">Display Selected</button>
 
-    <H5> Managers will see details of all employees working on their projects and can search by last name.</H5>
+    {{!-- <H5> Managers will see details of all employees working on their projects and can search by last name.</H5>
     <div class="col-md-4">
       <div class="input-group rounded">
         <input type="search" class="form-control rounded" placeholder="Search by Last Name" aria-label="Search"
@@ -64,7 +65,7 @@
         <span class="input-group-text border-0" id="search-addon">
           <i class="fas fa-search"></i>
         </span>
-      </div>
+      </div> --}}
     </div>
     <div class="row">
 
@@ -94,4 +95,4 @@
     </div>
   </div>
 
-  <script src="/profile.js"></script>
+<script type="text/javascript" src="profile.js" language="javascript"></script>

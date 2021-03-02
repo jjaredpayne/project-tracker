@@ -45,23 +45,64 @@ app.get('/registeremployee.html',function(req,res,next){
 
 app.get('/profile.html', function (req, res, next) {
   let context = {};
-  //SELECT all employee profiles when page is first loaded.
-  if (!req.session.active || req.session.active) {
-          var createString = "SELECT * FROM Employees;"
-          pool.query(createString, function (err, results) {
-              context.sqlresults = results;
-              res.render('profile',context); //render handlebars
-              req.session.active = 'yes';
-              console.log('* Employees Selected console');
-          });
-      return;
+  console.log("displayDefault")
+  console.log("WorkRole" + req.query.workRole)
+   //SELECT all Developer profiles when page is first loaded.
+  if(req.query.workRole === "1" || req.query.workRole === undefined){
+    var createString = "SELECT * FROM Employees JOIN Developers ON Employees.employeeID = Developers.employeeID;"
+    pool.query(createString, function (err, results) {
+      console.log(results);
+      context.sqlresults = results;
+      res.render('profile', context); //render handlebars
+      console.log('Finished Writing Developers');
+    });
+    return;
   }
-  //Renders the page each subsequent time the page is loaded
-  else {
-    console.log('else profile');
+  else if (req.query.workRole === "2"){
+    let context = {};
+    console.log("displayManagers")
+    var createString = "SELECT * FROM Employees JOIN Managers ON Employees.employeeID = Managers.employeeID;"
+    pool.query(createString, function (err, results) {
+      console.log(results);
+      context.sqlresults = results;
       res.render('profile', context);
+      console.log('Finished Writing Managers');
+    });
+    return;
   }
 });
+
+// app.get('/displayProfiles', function (req, res, next) {
+//   let context = {};
+//   // if(req.query.firstName === null || req.query.lastName === null){
+//     if(req.query.workRole === "1" || req.query.workRole === null){
+//       let context = {};
+//       console.log("displayDevelopers")
+//               var createString = "SELECT * FROM Employees JOIN Developers ON Employees.employeeID = Developers.employeeID;"
+//               pool.query(createString, function (err, results) {
+//                 console.log(results);
+//                 context.sqlresults = JSON.stringify(results);
+//                 console.log('node:' + context.sqlresults);
+//                 res.send(context.results);
+//               });
+//           return;
+//     }
+//     else{
+//       let context = {};
+//         console.log("displayManagers")
+//               var createString = "SELECT * FROM Employees JOIN Managers ON Employees.employeeID = Managers.employeeID;"
+//               pool.query(createString, function (err, results) {
+//                 console.log(results);
+//                 context.sqlresults = results;
+//                 console.log('node:' + context.sqlresults);
+//                 console.log('node:' + context);
+//                 res.send(context);
+//               });
+//           return;
+//     }
+//   // }
+// });
+
 
 app.get('/insertemployee', function (req, res, next) {
   console.log("insert employee")

@@ -1,3 +1,5 @@
+var nodeURL = 'http://flip3.engr.oregonstate.edu:8916/';
+
 function deleteRow(idButton) {
     //    console.log('idButton ' + idButton);
     return new Promise(function (resolve, reject) {
@@ -22,11 +24,40 @@ function deleteRow(idButton) {
                 }
             });
             req.send(null);
-            showTable();
         });
     });
+};
 
+function displayEmployees(){
+    console.log("displayEmployees");
+    return new Promise(function(resolve, reject){
+        var req = new XMLHttpRequest();
+        //get zipCode from form
+        //get countryCode from form
+        let payload = {firstName: null, lastName: null, workRole: null};
+        payload.workRole = document.getElementById('inputWorkRole').value;
+        payload.firstName = document.getElementById('inputFirstName').value;
+        payload.lastName = document.getElementById('inputLastName').value;
+        console.log(payload);
+        
+        reqURL = nodeURL + 'Profile.html' + '?firstName=' + payload.firstName + '&lastName=' + payload.lastName + '&workRole=' + payload.workRole;
+        console.log(reqURL);
 
+        //Name can't be empty.
+        console.log(reqURL);
+        req.open('GET', reqURL, true);
+        req.addEventListener("load", function () {
+            if (req.status >= 200 && req.status < 400) {
+                if (req.responseText !== '') {
+                    console.log('response' + req.responseText);
+                    let response = req;
+                } else {
+                }
+            } else {
+                console.log("Error! " + req.statusText);
+            }
+        });
+        req.send(null);
+    });
+};
 
-    }
-    ;
