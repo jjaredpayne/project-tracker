@@ -20,6 +20,12 @@ app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 app.set('port', 8916);
 
+var selectManagers = "SELECT * FROM Employees JOIN Managers ON Employees.employeeID = Managers.employeeID"
+var selectDevelopers = "SELECT * FROM Employees JOIN Developers ON Employees.employeeID = Developers.employeeID"
+var deleteManager = "DELETE FROM Developers WHERE employeeID = ";
+var deleteDeveloper = "DELETE FROM Managers WHERE employeeID = ";
+
+
 //Create mysql pool
 var pool = mysql.createPool({
     connectionLimit: 10,
@@ -45,37 +51,109 @@ app.get('/registeremployee.html',function(req,res,next){
 
 app.get('/profile.html', function (req, res, next) {
   let context = {};
-  var selectString = "SELECT * FROM Employees JOIN Managers ON Employees.employeeID = Managers.employeeID;"
-  pool.query(selectString, function (err, results) {
-    context.sqlresults = results;
-    res.render('profile', context);
-  });
-});
-
-app.post('/profile.html', function (req, res, next) {
-  let context = {};
-  if(req.body.workRole === "1"){
-    var selectString = "SELECT * FROM Employees JOIN Developers ON Employees.employeeID = Developers.employeeID;"
-    pool.query(selectString, function (err, rows, results) {
+  if(req.body.workRole === "2"){
+    pool.query(selectManagers, function (err, rows, results) {
       context.sqlresults = JSON.parse(JSON.stringify(rows));
       res.render('profile', context);
     });
   }
   else{
-    var selectString = "SELECT * FROM Employees JOIN Managers ON Employees.employeeID = Managers.employeeID;"
-    pool.query(selectString, function (err, rows, fields) {
+    pool.query(selectDevelopers, function (err, rows, fields) {
       context.sqlresults = JSON.parse(JSON.stringify(rows));
       res.render('profile', context);
     });
   }
 });
 
+app.post('/displayEmployees', function (req, res, next) {
+  let context = {};
+  console.log(req.body)
+  if(req.body.firstName !== '' && req.body.lastName === ''){
+    if(req.body.workRole === "1"){
+      pool.query(selectDevelopers + " WHERE Employees.firstName = '" + req.body.firstName + "';", function (err, rows, results) {
+        console.log("firstname not, lastname null")
+        context.sqlresults = JSON.parse(JSON.stringify(rows));
+        res.render('profile', context);
+      });
+    }
+    else{
+      pool.query(selectManagers, function (err, rows, fields) {
+        context.sqlresults = JSON.parse(JSON.stringify(rows));
+        res.render('profile', context);
+      });
+    }
+  }
+  else if(req.body.firstName === '' && req.body.lastName !== ''){
+    if(req.body.workRole === "1"){
+      pool.query(selectDevelopers + " WHERE Employees.lastName = '" + req.body.lastName + "';", function (err, rows, results) {
+        console.log("firstname null, lastname not")
+        context.sqlresults = JSON.parse(JSON.stringify(rows));
+        res.render('profile', context);
+      });
+    }
+    else{
+      pool.query(selectManagers, function (err, rows, fields) {
+        context.sqlresults = JSON.parse(JSON.stringify(rows));
+        res.render('profile', context);
+      });
+    }
+  }
+  else if(req.body.firstName !== '' && req.body.lastName !== ''){
+    if(req.body.workRole === "1"){
+      pool.query(selectDevelopers + " WHERE Employees.firstName = '" + req.body.firstName + "' AND Employees.lastName = '" + req.body.lastName + "'", function (err, rows, results) {
+        console.log("firstname not, lastname not")
+        context.sqlresults = JSON.parse(JSON.stringify(rows));
+        res.render('profile', context);
+      });
+    }
+    else{
+      pool.query(selectManagers, function (err, rows, fields) {
+        context.sqlresults = JSON.parse(JSON.stringify(rows));
+        res.render('profile', context);
+      });
+    }
+  }
+  else if(req.body.firstName === '' && req.body.lastName === ''){
+    if(req.body.workRole === "1"){
+      pool.query(selectDevelopers, function (err, rows, results) {
+        console.log("firstname null, lastname null")
+        context.sqlresults = JSON.parse(JSON.stringify(rows));
+        res.render('profile', context);
+      });
+    }
+    else{
+      pool.query(selectManagers, function (err, rows, fields) {
+        context.sqlresults = JSON.parse(JSON.stringify(rows));
+        res.render('profile', context);
+      });
+    }
+  }
+});
+
+// app.post('/displayAll', function (req, res, next) {
+//   let context = {};
+//   if(req.body.workRole === "1"){
+//     pool.query(selectDevelopers, function (err, rows, results) {
+//       console.log(rows)
+//       context.sqlresults = JSON.parse(JSON.stringify(rows));
+//       res.render('profile', context);
+//     });
+//   }
+//   else{
+//     pool.query(selectManagers, function (err, rows, fields) {
+//       context.sqlresults = JSON.parse(JSON.stringify(rows));
+//       res.render('profile', context);
+//     });
+//   }
+// });
+
+
 app.post('/deleteDeveloper', function (req, res, next) {
   let context = {};
     console.log(req.body);
-    var deleteString = "DELETE FROM Developers WHERE employeeID = ";
-    pool.query(deleteString + req.body.rowId, function (err, rows, results) {
-      console.log("deleting" + req.body);
+    pool.query(deleteDeveloper + req.body.rowId, function (err, rows, results) {
+    });
+    pool.query(selectDevelopers, function (err, rows, results) {
       res.render('profile');
     });
 });
@@ -83,9 +161,10 @@ app.post('/deleteDeveloper', function (req, res, next) {
 app.post('/deleteManager', function (req, res, next) {
   let context = {};
     console.log(req.body);
-    var deleteString = "DELETE FROM Managers WHERE employeeID = ";
-    pool.query(deleteString + req.body.rowId, function (err, rows, results) {
+    pool.query(deleteManager + req.body.rowId, function (err, rows, results) {
       console.log(err);
+    });
+    pool.query(selectManagers, function (err, rows, results) {
       res.render('profile');
     });
 });
@@ -94,13 +173,6 @@ app.get('/insertemployee', function (req, res, next) {
   console.log("insert employee")
   var context = {};
   pool.query("INSERT INTO Employees (`lastName`, `firstName`) VALUES (?, ?)", [req.query.lastName, req.query.firstName], function (err, result) {
-      // if (err) {
-      //     next(err);
-      //     return;
-      // }
-      // // context.results = "Inserted id " + result.insertId;
-      // // console.log('insert context' + context);
-      // // res.send(context);
   });
 });
 
@@ -110,28 +182,13 @@ app.get('/insertmanager', function (req, res, next) {
   reqLastName = req.query.lastName;
   reqFirstName = req.query.firstName;
   pool.query("INSERT INTO Managers (employeeID) SELECT employeeID FROM Employees WHERE lastName = '" + req.query.lastName + "' AND firstName = '" + req.query.firstName + "';", function (err, result) {
-      // if (err) {
-      //     next(err);
-      //     return;
-      // }
-      // // context.results = "Inserted id " + result.insertId;
-      // // console.log('insert context' + context);
-      // // res.send(context);
   });
-  
 });
 
 app.get('/insertdeveloper', function (req, res, next) {
   console.log("insert developer")
   var context = {};
   pool.query("INSERT INTO Developers (employeeID) SELECT employeeID FROM Employees WHERE lastName = '" + req.query.lastName + "' AND firstName = '" + req.query.firstName + "';", function (err, result) {
-      // if (err) {
-      //     next(err);
-      //     return;
-      // }
-      // context.results = "Inserted id " + result.insertId;
-      // console.log('insert context' + context);
-      // res.send(context);
   });
 });
 
