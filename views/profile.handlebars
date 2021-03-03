@@ -63,7 +63,7 @@
     </div>
     <div class="row">
       <div class="col-sm-8">
-        <table class="table" id="profile-table">
+        <table class="table" id="profileTable">
           <thead>
             <tr>
               <th scope="col">First Name</th>
@@ -75,22 +75,23 @@
           </thead>
           <tbody>
             {{#each sqlresults}}
-                <tr>
-                  <td>{{this.firstName}}</td>
-                  <td>{{this.lastName}}</td>
+                <tr id="row{{this.employeeID}}">
+                  <td id="cellFirstName{{this.employeeID}}">{{this.firstName}}</td>
+                  <td id="cellLastName{{this.employeeID}}">{{this.lastName}}</td>
                   <td>{{this.totalTasks}}</td>
                     <td>     
-                      {{#if this.developerId}}
-                        <form action="/deleteDeveloper" method="post" name="workRole" value="1">
-                        <button type="submit" class="btn btn-outline-secondary mb-2 btn-sm tableButton" id="rowId" name="rowId" value="{{this.employeeID}}">Delete</button>
+                      {{#if this.developerID}}
+                        <form action="/deleteDeveloper" method="post">
+                        <button type="submit" class="btn btn-outline-secondary mb-2 btn-sm tableButton" id="deleteButton{{this.employeeID}}" name="deleteButton{{this.employeeID}}" value="{{this.employeeID}}">Delete</button>
                         </form>
                       {{else}}
-                      <form action="/deleteManager" method="post" name="workRole" value="1">
-                      <button type="submit" class="btn btn-outline-secondary mb-2 btn-sm tableButton" id="rowId" name="rowId" value="{{this.employeeID}}">Delete</button>
+                      <form action="/deleteManager" method="post">
+                      <button type="submit" class="btn btn-outline-secondary mb-2 btn-sm tableButton" id="deleteButton{{this.employeeID}}" name="deleteButton{{this.employeeID}}" value="{{this.employeeID}}">Delete</button>
                       </form>
                       {{/if}}
                     </td>
-                  <td><button type="submit" class="btn btn-outline-secondary mb-2 btn-sm tableButton" id="editButton{{employeeID}}" onclick="{{employeeID}}">Edit</button>
+                  <td id="cellEditButton{{this.employeeID}}">
+                    <button type="submit" class="btn btn-outline-secondary mb-2 btn-sm tableButton" id="editButton{{this.employeeID}}" onclick="bindEditButton('{{this.employeeID}}', '{{this.firstName}}', '{{this.lastName}}')">Edit</button>
                   </td>
                 </tr>
             {{/each}}

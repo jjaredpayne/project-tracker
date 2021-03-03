@@ -22,8 +22,8 @@ app.set('port', 8916);
 
 var selectManagers = "SELECT * FROM Employees JOIN Managers ON Employees.employeeID = Managers.employeeID"
 var selectDevelopers = "SELECT * FROM Employees JOIN Developers ON Employees.employeeID = Developers.employeeID"
-var deleteManager = "DELETE FROM Developers WHERE employeeID = ";
-var deleteDeveloper = "DELETE FROM Managers WHERE employeeID = ";
+var deleteManager = "DELETE FROM Managers WHERE employeeID = ";
+var deleteDeveloper = "DELETE FROM Developers WHERE employeeID = ";
 
 
 //Create mysql pool
@@ -150,24 +150,42 @@ app.post('/displayEmployees', function (req, res, next) {
 
 app.post('/deleteDeveloper', function (req, res, next) {
   let context = {};
-    console.log(req.body);
+    console.log("deleting Developer" + req.body.rowId);
     pool.query(deleteDeveloper + req.body.rowId, function (err, rows, results) {
+      console.log(rows);
     });
     pool.query(selectDevelopers, function (err, rows, results) {
-      res.render('profile');
+      context.sqlresults = JSON.parse(JSON.stringify(rows));
+      res.render('profile', context);
     });
 });
 
 app.post('/deleteManager', function (req, res, next) {
   let context = {};
-    console.log(req.body);
+  console.log("deleting Manager" + req.body.rowId);
     pool.query(deleteManager + req.body.rowId, function (err, rows, results) {
       console.log(err);
     });
     pool.query(selectManagers, function (err, rows, results) {
-      res.render('profile');
+      context.sqlresults = JSON.parse(JSON.stringify(rows));
+      res.render('profile', context);
     });
 });
+
+app.post('/updateEmployee', function (req, res, next) {
+  let context = {};
+  console.log("updatingEmployee" + req.body.submitID);
+  console.log("updatingEmployee" + req.body.firstName);
+  console.log("updatingEmployee" + req.body.lastName);
+    pool.query("UPDATE Employees SET firstName = " + req.body.firstName + " AND lastName = " + req.body.lastName + " WHERE employeeID = " + req.body.submitID , function (err, rows, results) {
+      console.log(err);
+    });
+    pool.query(selectManagers, function (err, rows, results) {
+      context.sqlresults = JSON.parse(JSON.stringify(rows));
+      res.render('profile', context);
+    });
+});
+
 
 app.get('/insertemployee', function (req, res, next) {
   console.log("insert employee")
