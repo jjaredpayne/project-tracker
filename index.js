@@ -177,7 +177,7 @@ app.post('/updateEmployee', function (req, res, next) {
   console.log("updatingEmployee" + req.body.submitID);
   console.log("updatingEmployee" + req.body.firstName);
   console.log("updatingEmployee" + req.body.lastName);
-    pool.query("UPDATE Employees SET firstName = " + req.body.firstName + " AND lastName = " + req.body.lastName + " WHERE employeeID = " + req.body.submitID , function (err, rows, results) {
+    pool.query("UPDATE Employees SET firstName = '" + req.body.firstName + "', lastName = '" + req.body.lastName + "' WHERE employeeID = " + req.body.submitID , function (err, rows, results) {
       console.log(err);
     });
     pool.query(selectManagers, function (err, rows, results) {
