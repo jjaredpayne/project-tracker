@@ -1,4 +1,3 @@
-
 var express = require('express');
 var bodyParser = require('body-parser');
 var session = require('express-session');
@@ -20,10 +19,12 @@ app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 app.set('port', 8916);
 
-var selectManagers = "SELECT * FROM Employees JOIN Managers ON Employees.employeeID = Managers.employeeID"
-var selectDevelopers = "SELECT * FROM Employees JOIN Developers ON Employees.employeeID = Developers.employeeID"
-var deleteManager = "DELETE FROM Managers WHERE employeeID = ";
-var deleteDeveloper = "DELETE FROM Developers WHERE employeeID = ";
+var selectManagers = "SELECT * FROM Employees JOIN Managers ON Employees.employeeID = Managers.employeeID";
+var selectDevelopers = "SELECT * FROM Employees JOIN Developers ON Employees.employeeID = Developers.employeeID";
+var deleteManagedProjects = "DELETE ManagedProjects FROM ManagedProjects WHERE ManagedProjects.managerID IN (SELECT Managers.managerID FROM Managers WHERE Managers.employeeID = ";
+var deleteManager = "DELETE FROM Managers WHERE Managers.employeeID = ";
+var deleteAssignedProjects = "DELETE AssignedTasks FROM AssignedTasks WHERE AssignedTasks.developerID IN (SELECT Developers.developerID FROM Developers WHERE Developers.employeeID = ";
+var deleteDeveloper = "DELETE FROM Developers WHERE Developers.employeeID = ";
 
 
 //Create mysql pool
@@ -147,29 +148,32 @@ app.post('/displayEmployees', function (req, res, next) {
 //   }
 // });
 
-
 app.post('/deleteDeveloper', function (req, res, next) {
   let context = {};
-    console.log("deleting Developer" + req.body.rowId);
-    pool.query(deleteDeveloper + req.body.rowId, function (err, rows, results) {
-      console.log(rows);
-    });
-    pool.query(selectDevelopers, function (err, rows, results) {
-      context.sqlresults = JSON.parse(JSON.stringify(rows));
-      res.render('profile', context);
-    });
+  console.log("deleting Developer" + req.body.rowId);
+  pool.query(deleteAssignedProjects + req.body.rowId +")", function (err, rows, results) {
+  });
+  console.log(context.sqlresults);
+  pool.query(deleteDeveloper + req.body.rowId, function (err, rows, results) {
+  });
+  console.log(context.sqlresults);
+  pool.query(selectDevelopers, function (err, rows, results) {
+    context.sqlresults = JSON.parse(JSON.stringify(rows));
+    console.log(context.sqlresults);
+    res.render('profile', context);
+  });
 });
 
 app.post('/deleteManager', function (req, res, next) {
   let context = {};
-  console.log("deleting Manager" + req.body.rowId);
-    pool.query(deleteManager + req.body.rowId, function (err, rows, results) {
-      console.log(err);
-    });
-    pool.query(selectManagers, function (err, rows, results) {
-      context.sqlresults = JSON.parse(JSON.stringify(rows));
-      res.render('profile', context);
-    });
+  pool.query(deleteManagedProjects + req.body.rowId +")", function (err, rows, results) {
+  });
+  pool.query(deleteManager + req.body.rowId, function (err, rows, results) {
+  });
+  pool.query(selectManagers, function (err, rows, results) {
+    context.sqlresults = JSON.parse(JSON.stringify(rows));
+    res.render('profile', context);
+  });
 });
 
 app.post('/updateEmployee', function (req, res, next) {
@@ -177,13 +181,13 @@ app.post('/updateEmployee', function (req, res, next) {
   console.log("updatingEmployee" + req.body.submitID);
   console.log("updatingEmployee" + req.body.firstName);
   console.log("updatingEmployee" + req.body.lastName);
-    pool.query("UPDATE Employees SET firstName = '" + req.body.firstName + "', lastName = '" + req.body.lastName + "' WHERE employeeID = " + req.body.submitID , function (err, rows, results) {
-      console.log(err);
-    });
-    pool.query(selectManagers, function (err, rows, results) {
-      context.sqlresults = JSON.parse(JSON.stringify(rows));
-      res.render('profile', context);
-    });
+  pool.query("UPDATE Employees SET firstName = '" + req.body.firstName + "', lastName = '" + req.body.lastName + "' WHERE employeeID = " + req.body.submitID , function (err, rows, results) {
+    console.log(err);
+  });
+  pool.query(selectManagers, function (err, rows, results) {
+    context.sqlresults = JSON.parse(JSON.stringify(rows));
+    res.render('profile', context);
+  });
 });
 
 

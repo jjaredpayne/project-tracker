@@ -82,11 +82,11 @@
                     <td>     
                       {{#if this.developerID}}
                         <form action="/deleteDeveloper" method="post">
-                        <button type="submit" class="btn btn-outline-secondary mb-2 btn-sm tableButton" id="deleteButton{{this.employeeID}}" name="deleteButton{{this.employeeID}}" value="{{this.employeeID}}">Delete</button>
+                        <button type="submit" class="btn btn-outline-secondary mb-2 btn-sm tableButton" id="rowId" name="rowId" value="{{this.employeeID}}">Delete</button>
                         </form>
                       {{else}}
                       <form action="/deleteManager" method="post">
-                      <button type="submit" class="btn btn-outline-secondary mb-2 btn-sm tableButton" id="deleteButton{{this.employeeID}}" name="deleteButton{{this.employeeID}}" value="{{this.employeeID}}">Delete</button>
+                      <button type="submit" class="btn btn-outline-secondary mb-2 btn-sm tableButton" id="rowId" name="rowId" value="{{this.employeeID}}">Delete</button>
                       </form>
                       {{/if}}
                     </td>
