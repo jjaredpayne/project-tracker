@@ -1,6 +1,3 @@
-var Project = require('./project.js').Project;
-var ProjectList = require('./project.js').ProjectList;
-
 const baseURL = 'http://flip3.engr.oregonstate.edu:8157/';
 const table = document.getElementById('projectTable');
 
