@@ -42,11 +42,15 @@
 			  <form class="row g-3">
 				<div class="col-md-6">
 				  <span class="input-group-text" for="basic=inputProjectTitle">Project Title</label>
-				  <input type="Text" class="form-control" id="inputProjectTitle">
+				  <input type="Text" class="form-control" id="inputProjectTitle">>
 				</div>
 				<div class="col-md-6">
 				  <span class="input-group-text" for="basic=inputOwner">Owner</label>
-				  <input type="Text" class="form-control" id="inputOwner">
+				  <select class="form-select" id="inputOwner">
+					  {{#each Manager}}
+					  <option value="{{this.managerID}}">{{this.name}}</option>
+					  {{/each}}
+				  </select>
 				</div>
 				<div class="col-md-12">
 				  <span class="input-group-text" for="basic=inputStatus">Status</label>
@@ -61,8 +65,10 @@
 				<div class="col-md-12">
 				  <span class="input-group-text" for="basic=inputDueDate">Due Date</label>
 				<input type="Date" class="form-control" id="inputDuedate">
-				  </select>
 				</div>
+				<div class="col-12">
+              		<button type="submit" class="btn btn-primary" id="registerEmployees" onclick="addProject()">Add Project</button>
+            	</div>
 			  </form>
 			</div>
 		  </div>
@@ -82,7 +88,7 @@
 		<div class="row">
 
 		<div class="col-sm-8">
-		  <table class="table">
+		  <table class="table" name="projectTables">
 			<thead>
 			  <tr>
 				<th scope="col">Project Title</th>
@@ -96,12 +102,12 @@
 			</thead>
           <tbody>
             {{#each Project}}
-			  <tr>
-				<td class="title" id="{{this.projectID}}"><a href="project.html?id={{this.projectID}}">{{this.title}}</a></td>
+			  <tr id="{{this.projectID}}">
+				<td class="title" id="{{this.projectID}}" name="title"><a href="project.html?id={{this.projectID}}">{{this.title}}</a></td>
 				<td class="owner" id="{{this.projectID}}"><form id="{{this.projectID}}"><input type="text" name="owner" disabled=true>{{this.owner}}</input></form></td>
 				<td class="percentComplete" id="{{this.projectID}}"><form id="{{this.projectID}}"><input type="number" name="percentComplete" disabled=true>{{this.percentComplete}}</input></form></td>
 				<td class=Status><form id="{{this.projectID}}">          	
-                    <select class="form-control-sm" id="inputStatus" disabled=true>
+                    <select class="form-control-sm" id="inputStatus" name="status" disabled=true>
                 		<option selected>{{this.status}}</option>
                 		<option value="1">Scheduled</option>
 					    <option value="2">On Schedule</option>
