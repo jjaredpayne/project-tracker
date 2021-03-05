@@ -253,6 +253,20 @@ app.get('/projectlist.html',function(req,res,next){
   });
 });
 
+app.get('/projectlist.html2',function(req,res,next){
+  var context = {};
+
+  mysql.pool.query(getManagersQuery, (err, rows, fields) => {
+    if(err){
+      next(err);
+      return;
+    }
+    context.Managers = JSON.stringify(rows)
+  })
+  res.render('projectlist', context);
+  });
+});
+
 app.get('/project.html',function(req,res,next){
   var context = {};
   mysql.pool.query(getTaskQuery, req.query.id, (err, rows, fields) => {
