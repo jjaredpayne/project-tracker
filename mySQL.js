@@ -39,6 +39,7 @@ JOIN Employees ON
 WHERE projectID = ?
   AND completed = 0`;
 const getProjectIDQuery = "SELECT projectID FROM Projects where title=?;"
+const getManagersQuery = "SELECT managerID, CONCAT(Employees.firstname, ' ', Employees.lastname) AS name FROM Managers JOIN Employees ON Managers.employeeID = Employees.employeeID"
 const insertProjectQuery = "INSERT INTO Projects(`title`, `percentComplete`, `plannedEnd`, `projectStatus`) VALUES (?,?,?,?) ";
 const insertManagedProjectQuery = "INSERT INTO ManagedProjects (`projectID`, `managerID`) VALUES (?,?) ";
 const insertTaskQuery = "INSERT INTO Tasks (`projectID`, `title`, `taskDetails`, `dueDate`) VALUES (?,?,?,?) ";
@@ -70,8 +71,16 @@ app.get('/projectlist.html',function(req,res,next){
       next(err);
       return;
     }
-    context.results = JSON.stringify(rows);
-    res.send(context);
+    context.Project = JSON.stringify(rows);
+  
+  mysql.pool.query(getManagersQuery, (err, rows, fields) => {
+    if(err){
+      next(err);
+      return;
+    }
+    context.Managers = JSON.stringify(rows)
+  })
+  res.render('projectlist', context);
   });
 });
 
