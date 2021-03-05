@@ -94,9 +94,10 @@ function addProject(){
         //get countryCode from form
         let payload = {title: null, owner: null, status: null, dueDate: null};
         payload.title = document.getElementById('inputProjectTitle').value;
-        payload.owner = document.getElementById('inputOwner').value;
-        payload.status = document.getElementById('inputStatus').value;
+        payload.percentComplete = 0;
         payload.dueDate = document.getElementById('inputDuedate').value;
+        payload.status = document.getElementById('inputStatus').value;
+        payload.owner = document.getElementById('inputOwner').value;
         console.log(payload);
         
         //Owner can't be empty.

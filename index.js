@@ -166,7 +166,6 @@ app.post('/displayEmployees', function (req, res, next) {
   }
 });
 
-
 app.post('/deleteDeveloper', function (req, res, next) {
   let context = {};
   console.log("deleting Developer" + req.body.rowId);
@@ -242,6 +241,20 @@ app.get('/projectlist.html',function(req,res,next){
     }
     context.Project = JSON.stringify(rows);
   
+  mysql.pool.query(getManagersQuery, (err, rows, fields) => {
+    if(err){
+      next(err);
+      return;
+    }
+    context.Managers = JSON.stringify(rows)
+  })
+  res.render('projectlist', context);
+  });
+});
+
+app.get('/projectlist.html2',function(req,res,next){
+  var context = {};
+
   mysql.pool.query(getManagersQuery, (err, rows, fields) => {
     if(err){
       next(err);
