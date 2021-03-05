@@ -239,14 +239,7 @@ app.get('/projectlist.html',function(req,res,next){
       next(err);
       return;
     }
-    context.Project = JSON.stringify(rows);
-  
-  mysql.pool.query(getManagersQuery, (err, rows, fields) => {
-    if(err){
-      next(err);
-      return;
-    }
-    context.Managers = JSON.stringify(rows)
+    context.Project = JSON.stringify(rows)
   })
   res.render('projectlist', context);
   });
@@ -274,7 +267,7 @@ app.get('/project.html',function(req,res,next){
       return;
     }
     context.results = JSON.stringify(rows);
-    res.send(context);
+    res.(context);
   });
 });
 
