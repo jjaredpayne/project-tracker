@@ -166,7 +166,6 @@ app.post('/displayEmployees', function (req, res, next) {
   }
 });
 
-
 app.post('/deleteDeveloper', function (req, res, next) {
   let context = {};
   console.log("deleting Developer" + req.body.rowId);
