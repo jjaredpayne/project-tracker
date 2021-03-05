@@ -19,12 +19,12 @@ app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 app.set('port', 8916);
 
-var selectManagers = "SELECT * FROM Employees JOIN Managers ON Employees.employeeID = Managers.employeeID";
-var selectDevelopers = "SELECT * FROM Employees JOIN Developers ON Employees.employeeID = Developers.employeeID";
-var deleteManagedProjects = "DELETE ManagedProjects FROM ManagedProjects WHERE ManagedProjects.managerID IN (SELECT Managers.managerID FROM Managers WHERE Managers.employeeID = ";
-var deleteManager = "DELETE FROM Managers WHERE Managers.employeeID = ";
-var deleteAssignedProjects = "DELETE AssignedTasks FROM AssignedTasks WHERE AssignedTasks.developerID IN (SELECT Developers.developerID FROM Developers WHERE Developers.employeeID = ";
-var deleteDeveloper = "DELETE FROM Developers WHERE Developers.employeeID = ";
+const selectManagers = "SELECT * FROM Employees JOIN Managers ON Employees.employeeID = Managers.employeeID";
+const selectDevelopers = "SELECT * FROM Employees JOIN Developers ON Employees.employeeID = Developers.employeeID";
+const deleteManagedProjects = "DELETE ManagedProjects FROM ManagedProjects WHERE ManagedProjects.managerID IN (SELECT Managers.managerID FROM Managers WHERE Managers.employeeID = ";
+const deleteManager = "DELETE FROM Managers WHERE Managers.employeeID = ";
+const deleteAssignedProjects = "DELETE AssignedTasks FROM AssignedTasks WHERE AssignedTasks.developerID IN (SELECT Developers.developerID FROM Developers WHERE Developers.employeeID = ";
+const deleteDeveloper = "DELETE FROM Developers WHERE Developers.employeeID = ";
 const getProjectQuery =`SELECT 
     projectID, title, CONCAT(Employees.firstname, ' ', Employees.lastname) AS owner, percentComplete, projectStatus AS status, plannedEnd AS dueDate
   FROM Projects 
@@ -60,7 +60,6 @@ const deleteProjectQuery = "DELETE FROM Projects WHERE projectID=? ";
 const deleteTaskQuery = "DELETE FROM Tasks WHERE taskID=? ";
 const updateProjectQuery = "UPDATE Projects SET title=?, percentComplete=?, plannedEnd=?, projectStatus=? WHERE projectID=? ";
 const updateTaskQuery = "UPDATE Tasks SET title=?, taskDetails=?, dueDate=?, completed=? WHERE taskID=? ";
-
 
 //Create mysql pool
 var pool = mysql.createPool({
@@ -150,16 +149,22 @@ app.post('/displayEmployees', function (req, res, next) {
     }
   }
   else if(req.body.firstName === '' && req.body.lastName === ''){
+    console.log("firstname null, lastname null")
     if(req.body.workRole === "1"){
       pool.query(selectDevelopers, function (err, rows, results) {
-        console.log("firstname null, lastname null")
         context.sqlresults = JSON.parse(JSON.stringify(rows));
+        context.developerID = 1;
+        console.log(context.sqlresults);
         res.render('profile', context);
       });
     }
     else{
       pool.query(selectManagers, function (err, rows, fields) {
+        console.log("insert manager")
         context.sqlresults = JSON.parse(JSON.stringify(rows));
+        context.developerID = '';
+        console.log(context.sqlresults);
+        console.log(context.developerID);
         res.render('profile', context);
       });
     }
@@ -217,11 +222,22 @@ app.get('/insertemployee', function (req, res, next) {
 });
 
 app.get('/insertmanager', function (req, res, next) {
-  console.log("insert manager")
+  const insertManager1 = "BEGIN; INSERT INTO Employees (lastName, firstName) VALUES( "
+  const insertManager2 = "'); INSERT INTO Managers (employeeID, managementStyle) VALUES (LAST_INSERT_ID(), "
+  const insertManager3 = "); COMMIT;"
+  var insertID = null;
+
+  console.log(insertManager1 + "'" + req.query.lastName + "' , '" + req.query.firstName + insertManager2 + req.query.managementStyle + insertManager3);
   var context = {};
   reqLastName = req.query.lastName;
   reqFirstName = req.query.firstName;
-  pool.query("INSERT INTO Managers (employeeID) SELECT employeeID FROM Employees WHERE lastName = '" + req.query.lastName + "' AND firstName = '" + req.query.firstName + "';", function (err, result) {
+  reqManagementStyle = req.query.managementStyle;
+
+  pool.query("INSERT INTO Employees (lastName, firstName) VALUES(?,?)",[req.query.lastName, req.query.firstName], function (err, result) {
+    console.log(err);
+    insertID = result.insertId
+    pool.query("INSERT INTO Managers (employeeID, managementStyle) VALUES(?,?)", [insertID, req.query.managementStyle], function (err, result) {
+    });
   });
 });
 
@@ -240,29 +256,26 @@ app.get('/projectlist.html',function(req,res,next){
       return;
     }
     context.Project = JSON.stringify(rows);
-  
-  mysql.pool.query(getManagersQuery, (err, rows, fields) => {
-    if(err){
-      next(err);
-      return;
-    }
-    context.Managers = JSON.stringify(rows)
-  })
-  res.render('projectlist', context);
+    mysql.pool.query(getManagersQuery, (err, rows, fields) => {
+      if(err){
+        next(err);
+        return;
+      }
+      context.Managers = JSON.stringify(rows)
+      res.render('projectlist', context);
+    });
   });
 });
 
 app.get('/projectlist.html2',function(req,res,next){
   var context = {};
-
   mysql.pool.query(getManagersQuery, (err, rows, fields) => {
     if(err){
       next(err);
       return;
     }
     context.Managers = JSON.stringify(rows)
-  })
-  res.render('projectlist', context);
+    res.render('projectlist', context);
   });
 });
 
