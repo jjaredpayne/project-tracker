@@ -22,11 +22,12 @@ function bindEditButtonDeveloper(employeeID, firstName, lastName) {
         var createForm = "<form action='/updateEmployee' id='updateEmployee' method='post'>"
         var createFirstNameCell = "<td><input type='text' form='updateEmployee' class='form-control' id='editFirstName' name='firstName' placeholder='" + firstName + "'></input></td>"
         var createLastNameCell = "<td><input type='text' form='updateEmployee' class='form-control' id='editLastName' name='lastName' placeholder='" + lastName + "'></input></td>"
-        var createCurrentTasksCell = "<td><input type='text' form='updateEmployee' class='form-control' id='editLastName' name='currentTasks' placeholder=' + currentTasks + '></input></td>"
+        // var createCurrentTasksCell = "<td><input type='text' form='updateEmployee' class='form-control' id='editLastName' name='currentTasks' placeholder=' + currentTasks + '></input></td>"
         var removeDelete = "<td></td>"
         var createSubmit = "<Button form='updateEmployee' type='submit' class='btn btn-outline-secondary mb-2 btn-sm tableButton'  name='submitID' id='submitButton" + employeeID + "' value='" + employeeID + "'>Submit</button>";
         console.log(lastName)
-        tRow.innerHTML = createForm + createFirstNameCell + createLastNameCell + createCurrentTasksCell + removeDelete + createSubmit;
+        // tRow.innerHTML = createForm + createFirstNameCell + createLastNameCell + createCurrentTasksCell + removeDelete + createSubmit;
+        tRow.innerHTML = createForm + createFirstNameCell + createLastNameCell + "<td>" + totalTasks + "</td" + removeDelete + createSubmit;
 
         // firstNameCell.innerHTML = "<input type='text' class='form-control' id='editFirstName' name='firstName' placeholder='" + firstName + "'>";
         // lastNameCell.innerHTML = "<input type='text' class='form-control' id='editLastName' name='lastName' placeholder='" + lastName + "'>";
@@ -45,7 +46,7 @@ function bindEditButtonManager(employeeID, firstName, lastName, managementStyle)
         
         //specifies which row to edit
         var table = document.getElementById('profileTable');
-        var tRow = document.getElementById('row'+employeeID);
+        var tRow = document.getElementById('row' + employeeID);
 
         var firstNameCell = document.getElementById('cellFirstName'+employeeID)
         var lastNameCell = document.getElementById('cellLastName'+employeeID)
