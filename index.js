@@ -20,7 +20,18 @@ app.set('view engine', 'handlebars');
 app.set('port', 8916);
 
 const selectManagers = "SELECT * FROM Employees JOIN Managers ON Employees.employeeID = Managers.employeeID";
-const selectDevelopers = "SELECT * FROM Employees JOIN Developers ON Employees.employeeID = Developers.employeeID";
+// const selectDevelopers = "SELECT * FROM Employees JOIN Developers ON Employees.employeeID = Developers.employeeID";
+// const countTasks = "SELECT COUNT(*) FROM AssignedTasks JOIN Developers ON AssignedTasks.developerID = Developers.developerID"
+// const selectDevelopers = "SELECT Employees.employeeID, Employees.firstName, Employees.lastName, Count(AssignedTasks.taskID) as totaltasks FROM Employees JOIN Developers ON Employees.employeeID = Developers.employeeID JOIN AssignedTasks ON Developers.developerID = AssignedTasks.developerID";
+
+
+const selectDevelopers = 
+`SELECT Employees.employeeID, firstName, lastName, COUNT(AssignedTasks.taskID) as totalTasks
+FROM Employees
+    INNER JOIN Developers ON Employees.employeeID = Developers.employeeID
+    LEFT JOIN AssignedTasks ON Developers.developerID  = AssignedTasks.developerID
+GROUP BY Employees.employeeID`
+
 const deleteManagedProjects = "DELETE ManagedProjects FROM ManagedProjects WHERE ManagedProjects.managerID IN (SELECT Managers.managerID FROM Managers WHERE Managers.employeeID = ";
 const deleteManager = "DELETE FROM Managers WHERE Managers.employeeID = ";
 const deleteAssignedProjects = "DELETE AssignedTasks FROM AssignedTasks WHERE AssignedTasks.developerID IN (SELECT Developers.developerID FROM Developers WHERE Developers.employeeID = ";
@@ -108,19 +119,28 @@ app.post('/displayEmployees', function (req, res, next) {
       pool.query(selectDevelopers + " WHERE Employees.firstName = '" + req.body.firstName + "';", function (err, rows, results) {
         console.log("firstname not, lastname null")
         context.sqlresults = JSON.parse(JSON.stringify(rows));
-        pool.query(selectDevelopers + " WHERE Employees.firstName ='" + req.body.firstName + "';", function (err, rows, results) {
-          console.log(rows);
-          context.sqlcount = JSON.parse(JSON.stringify(rows));
-          context.developerID = 1;
-          context.managerID = '';
-          console.log("sql"+context.sqlcount)
-          res.render('profile', context);
-        });
+        // pool.query(selectDevelopers + " WHERE Employees.firstName ='" + req.body.firstName + "';", function (err, rows2, results) {
+        //   console.log(rows);
+        //   context.numberoftasks = JSON.parse(JSON.stringify(rows));
+        //   context.developerID = 1;
+        //   context.managerID = '';
+        //   console.log("sql"+context.numberoftasks)
+        //   res.render('profile', context);
+        // });
       });
     }
     else{
       pool.query(selectManagers + " WHERE Employees.firstName = '" + req.body.firstName + "';", function (err, rows, fields) {
         context.sqlresults = JSON.parse(JSON.stringify(rows));
+        for (var key in context.sqlresults){
+          console.log(typeof key)
+          console.log(context.sqlresults[key].managementStyle)
+          if (context.sqlresults[key].managementStyle === 1) context.sqlresults[key].managementStyle = 'Tyrant';
+          if (context.sqlresults[key].managementStyle === 2) context.sqlresults[key].managementStyle = 'Nurturer';
+          if (context.sqlresults[key].managementStyle === 3) context.sqlresults[key].managementStyle = 'Anything Goes!';
+        };
+        console.log (context.sqlresults)
+        
         context.developerID = '';
         context.managerID = 1;
         res.render('profile', context);
@@ -140,6 +160,13 @@ app.post('/displayEmployees', function (req, res, next) {
     else{
       pool.query(selectManagers + " WHERE Employees.lastName = '" + req.body.lastName + "';", function (err, rows, fields) {
         context.sqlresults = JSON.parse(JSON.stringify(rows));
+        for (var key in context.sqlresults){
+          console.log(typeof key)
+          console.log(context.sqlresults[key].managementStyle)
+          if (context.sqlresults[key].managementStyle === 1) context.sqlresults[key].managementStyle = 'Tyrant';
+          if (context.sqlresults[key].managementStyle === 2) context.sqlresults[key].managementStyle = 'Nurturer';
+          if (context.sqlresults[key].managementStyle === 3) context.sqlresults[key].managementStyle = 'Anything Goes!';
+        };
         context.developerID = '';
         context.managerID = 1;
         res.render('profile', context);
@@ -151,6 +178,7 @@ app.post('/displayEmployees', function (req, res, next) {
       pool.query(selectDevelopers + " WHERE Employees.firstName = '" + req.body.firstName + "' AND Employees.lastName = '" + req.body.lastName + "'", function (err, rows, results) {
         console.log("firstname not, lastname not")
         context.sqlresults = JSON.parse(JSON.stringify(rows));
+        console.log(context.sqlresults)
         context.developerID = 1;
         context.managerID = '';
         res.render('profile', context);
@@ -159,6 +187,13 @@ app.post('/displayEmployees', function (req, res, next) {
     else{
       pool.query(selectManagers + " WHERE Employees.firstName = '" + req.body.firstName + "' AND Employees.lastName = '" + req.body.lastName + "'", function (err, rows, fields) {
         context.sqlresults = JSON.parse(JSON.stringify(rows));
+        for (var key in context.sqlresults){
+          console.log(typeof key)
+          console.log(context.sqlresults[key].managementStyle)
+          if (context.sqlresults[key].managementStyle === 1) context.sqlresults[key].managementStyle = 'Tyrant';
+          if (context.sqlresults[key].managementStyle === 2) context.sqlresults[key].managementStyle = 'Nurturer';
+          if (context.sqlresults[key].managementStyle === 3) context.sqlresults[key].managementStyle = 'Anything Goes!';
+        };
         context.developerID = '';
         context.managerID = 1;
         res.render('profile', context);
@@ -178,8 +213,16 @@ app.post('/displayEmployees', function (req, res, next) {
     }
     else{
       pool.query(selectManagers, function (err, rows, fields) {
-        console.log("insert manager")
+        console.log("display manager")
         context.sqlresults = JSON.parse(JSON.stringify(rows));
+        
+        for (var key in context.sqlresults){
+          console.log(typeof key)
+          console.log(context.sqlresults[key].managementStyle)
+          if (context.sqlresults[key].managementStyle === 1) context.sqlresults[key].managementStyle = 'Tyrant';
+          if (context.sqlresults[key].managementStyle === 2) context.sqlresults[key].managementStyle = 'Nurturer';
+          if (context.sqlresults[key].managementStyle === 3) context.sqlresults[key].managementStyle = 'Anything Goes!';
+        };
         context.developerID = '';
         context.managerID = 1;
         console.log(context.sqlresults);
@@ -263,7 +306,11 @@ app.get('/insertmanager', function (req, res, next) {
 app.get('/insertdeveloper', function (req, res, next) {
   console.log("insert developer")
   var context = {};
-  pool.query("INSERT INTO Developers (employeeID) SELECT employeeID FROM Employees WHERE lastName = '" + req.query.lastName + "' AND firstName = '" + req.query.firstName + "';", function (err, result) {
+  pool.query("INSERT INTO Employees (lastName, firstName) VALUES(?,?)",[req.query.lastName, req.query.firstName], function (err, result) {
+    console.log(err);
+    insertID = result.insertId
+    pool.query("INSERT INTO Developers (employeeID) VALUES(?)", [insertID], function (err, result) {
+    });
   });
 });
 

@@ -2,7 +2,7 @@ var nodeURL = 'http://flip3.engr.oregonstate.edu:8916/';
 
 //Inserts a row below the row to be edited. Populates with fields to capture
 //update data. Then, allows the data updates to be submitted.
-function bindEditButtonDeveloper(employeeID, firstName, lastName) {
+function bindEditButtonDeveloper(employeeID, firstName, lastName, totalTasks) {
     console.log("edit button " + employeeID + " " + firstName);
     //Bind Edit Button and manipulate DOM fields to create 'edit' row.
     document.getElementById('editButton' + employeeID).addEventListener('click', function (event) {
@@ -20,14 +20,13 @@ function bindEditButtonDeveloper(employeeID, firstName, lastName) {
         //Insert Edit Fields
 
         var createForm = "<form action='/updateEmployee' id='updateEmployee' method='post'>"
-        var createFirstNameCell = "<td><input type='text' form='updateEmployee' class='form-control' id='editFirstName' name='firstName' placeholder='" + firstName + "'></input></td>"
-        var createLastNameCell = "<td><input type='text' form='updateEmployee' class='form-control' id='editLastName' name='lastName' placeholder='" + lastName + "'></input></td>"
-        // var createCurrentTasksCell = "<td><input type='text' form='updateEmployee' class='form-control' id='editLastName' name='currentTasks' placeholder=' + currentTasks + '></input></td>"
+        var createFirstNameCell = "<td><input type='text' form='updateEmployee' class='form-control' id='editFirstName' name='firstName' value='" + firstName + "'></input></td>"
+        var createLastNameCell = "<td><input type='text' form='updateEmployee' class='form-control' id='editLastName' name='lastName' value='" + lastName + "'></input></td>"
+        var createCurrentTasksCell = "<td><input type='text' form='updateEmployee' class='form-control' id='editTotalTasks' name='totalTasks' value='" + totalTasks + "'></input></td>"
         var removeDelete = "<td></td>"
         var createSubmit = "<Button form='updateEmployee' type='submit' class='btn btn-outline-secondary mb-2 btn-sm tableButton'  name='submitID' id='submitButton" + employeeID + "' value='" + employeeID + "'>Submit</button>";
-        console.log(lastName)
         // tRow.innerHTML = createForm + createFirstNameCell + createLastNameCell + createCurrentTasksCell + removeDelete + createSubmit;
-        tRow.innerHTML = createForm + createFirstNameCell + createLastNameCell + "<td>" + totalTasks + "</td" + removeDelete + createSubmit;
+        tRow.innerHTML = createForm + createFirstNameCell + createLastNameCell + createCurrentTasksCell + removeDelete + createSubmit;
 
         // firstNameCell.innerHTML = "<input type='text' class='form-control' id='editFirstName' name='firstName' placeholder='" + firstName + "'>";
         // lastNameCell.innerHTML = "<input type='text' class='form-control' id='editLastName' name='lastName' placeholder='" + lastName + "'>";
@@ -54,13 +53,20 @@ function bindEditButtonManager(employeeID, firstName, lastName, managementStyle)
         //Insert Edit Fields
 
         var createForm = "<form action='/updateEmployee' id='updateEmployee' method='post'>"
-        var createFirstNameCell = "<td><input type='text' form='updateEmployee' class='form-control' id='editFirstName' name='firstName' placeholder='" + firstName + "'></input></td>"
-        var createLastNameCell = "<td><input type='text' form='updateEmployee' class='form-control' id='editLastName' name='lastName' placeholder='" + lastName + "'></input></td>"
-        var createCurrentTasksCell = "<td><input type='text' form='updateEmployee' class='form-control' id='editLastName' name='managementStyle' placeholder='" + managementStyle + "'></input></td>"
+        var createFirstNameCell = "<td><input type='text' form='updateEmployee' class='form-control' id='editFirstName' name='firstName' value='" + firstName + "'></input></td>"
+        var createLastNameCell = "<td><input type='text' form='updateEmployee' class='form-control' id='editLastName' name='lastName' value='" + lastName + "'></input></td>"
+        var createManagementStyleCell = "<td>" + managementStyle + "</td>"
+        // var createManagementStyleCell = "<select class='form-select' id='managementStyle' name='managementStyle'> <option value='1' selected>" + managmentTex + "</option> <option value='2'>Nurturer</option> <option value='3'>Anything Goes!</option> </select>"
+
+
+        // var createManagementStyleCell = "<td><input type='text' form='updateEmployee' class='form-control' id='editLastName' name='managementStyle' placeholder='" + managementStyle + "'></input></td>"
+
+        
+
         var removeDelete = "<td></td>"
         var createSubmit = "<Button form='updateEmployee' type='submit' class='btn btn-outline-secondary mb-2 btn-sm tableButton'  name='submitID' id='submitButton" + employeeID + "' value='" + employeeID + "'>Submit</button>";
         console.log(lastName)
-        tRow.innerHTML = createForm + createFirstNameCell + createLastNameCell + createCurrentTasksCell + removeDelete + createSubmit;
+        tRow.innerHTML = createForm + createFirstNameCell + createLastNameCell + createManagementStyleCell + removeDelete + createSubmit;
 
         // firstNameCell.innerHTML = "<input type='text' class='form-control' id='editFirstName' name='firstName' placeholder='" + firstName + "'>";
         // lastNameCell.innerHTML = "<input type='text' class='form-control' id='editLastName' name='lastName' placeholder='" + lastName + "'>";
