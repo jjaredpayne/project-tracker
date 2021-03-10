@@ -36,7 +36,12 @@
             <div class="col-md-12">
               <span class="input-group-text">Display: </label>
                 <select class="form-select" id = "workRole" name="workRole">
-                  <option value="1" selected>Developers</option>
+                  {{#if developerID}}
+                    <option value="1" selected>Developers</option>
+                  {{/if}}
+                  {{#if managerID}}
+                    <option value="1" selected>Developers</option>
+                  {{/if}}
                   <option value="1">Developers</option>
                   <option value="2">Managers</option>
                 </select>
