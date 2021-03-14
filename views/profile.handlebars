@@ -36,7 +36,12 @@
             <div class="col-md-12">
               <span class="input-group-text">Display: </label>
                 <select class="form-select" id = "workRole" name="workRole">
-                  <option value="1" selected>Developers</option>
+                  {{#if developerID}}
+                    <option value="1" selected="1">Developers</option>
+                  {{/if}}
+                  {{#if managerID}}
+                    <option value="2" selected="2">Managers</option>
+                  {{/if}}
                   <option value="1">Developers</option>
                   <option value="2">Managers</option>
                 </select>
@@ -61,6 +66,7 @@
         </span>
       </div> --}}
     </div>
+<<<<<<< HEAD
     <div class="row">
       <div class="col-sm-8">
         <table class="table" id="profileTable">
@@ -82,6 +88,64 @@
                     <td>     
                       {{#if this.developerID}}
                         <form action="/deleteDeveloper" method="post">
+=======
+
+    {{#if developerID}}
+      <div class="row">
+        <div class="col-sm-8">
+          <table class="table" id="profileTable">
+            <thead>
+              <tr>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Current Tasks</th>
+                <th scope="col">Delete</th>
+                <th scope="col">Edit</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each sqlresults}}
+                  <tr id="row{{this.employeeID}}">
+                    <td id="cellFirstName{{this.employeeID}}">{{this.firstName}}</td>
+                    <td id="cellLastName{{this.employeeID}}">{{this.lastName}}</td>
+                    <td>{{this.totalTasks}}</td>
+                      <td>     
+                          <form action="/deleteDeveloper" method="post">
+                          <button type="submit" class="btn btn-outline-secondary mb-2 btn-sm tableButton" id="rowId" name="rowId" value="{{this.employeeID}}">Delete</button>
+                          </form>
+                      </td>
+                    <td id="cellEditButton{{this.employeeID}}">
+                      <button type="submit" class="btn btn-outline-secondary mb-2 btn-sm tableButton" id="editButton{{this.employeeID}}" onclick="bindEditButtonDeveloper('{{this.employeeID}}', '{{this.firstName}}', '{{this.lastName}}','{{this.totalTasks}}')">Edit</button>
+                    </td>
+                  </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    {{/if}}
+    {{#if managerID}}
+      <div class="row">
+        <div class="col-sm-8">
+          <table class="table" id="profileTable">
+            <thead>
+              <tr>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Managment Style</th>
+                <th scope="col">Delete</th>
+                <th scope="col">Edit</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each sqlresults}}
+                  <tr id="row{{this.employeeID}}">
+                    <td id="cellFirstName{{this.employeeID}}">{{this.firstName}}</td>
+                    <td id="cellLastName{{this.employeeID}}">{{this.lastName}}</td>
+                    <td>{{this.managementStyle}}</td>
+                      <td>     
+                        <form action="/deleteManager" method="post">
+>>>>>>> df14400c897a33c09d99cef76c003d968e6986b6
                         <button type="submit" class="btn btn-outline-secondary mb-2 btn-sm tableButton" id="rowId" name="rowId" value="{{this.employeeID}}">Delete</button>
                         </form>
                       {{else}}
