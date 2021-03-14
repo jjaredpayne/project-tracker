@@ -46,7 +46,7 @@ const getProjectQuery =`SELECT
   JOIN Employees ON
     Managers.employeeID = Employees.employeeID`;
 const getTaskQuery = `SELECT
-  taskID,
+  Tasks.taskID,
   title,
   taskDetails,
   AssignedTasks.developerID AS "developerID",
@@ -62,6 +62,22 @@ JOIN Employees ON
   Employees.employeeID = Developers.employeeID
 WHERE projectID = ?
   AND completed = 0`;
+const getAllTasksQuery = `SELECT
+  Tasks.taskID,
+  title,
+  taskDetails,
+  AssignedTasks.developerID AS "developerID"
+  CONCAT (Employees.firstName, ' ', Employees.lastName) AS "owner"
+  dueDate,
+  AssignedTasks.satisfaction AS "satisfaction"
+  FROM Tasks
+  JOIN AssignedTasks ON
+    AssignedTasks.taskID = Tasks.taskID
+  JOIN Developers ON
+    Developers.developerID = AsssignedTasks.developerID
+  JOIN Employees ON
+    Employees.employeeID = Developers.employeeID
+  WHERE completed = 0`
 const getProjectIDQuery = "SELECT projectID FROM Projects where title=?;"
 const getManagersQuery = "SELECT managerID, CONCAT(Employees.firstname, ' ', Employees.lastname) AS name FROM Managers JOIN Employees ON Managers.employeeID = Employees.employeeID"
 const insertProjectQuery = "INSERT INTO Projects(`title`, `percentComplete`, `plannedEnd`, `projectStatus`) VALUES (?,?,?,?) ";
@@ -322,11 +338,11 @@ app.get('/projectlist.html',function(req,res,next){
       return;
     }
     context.Project = JSON.stringify(rows);
-    pool.query(getManagersQuery, (err, rows, fields) => {
-      if(err){
-        next(err);
-        return;
-      }
+  pool.query(getManagersQuery, (err, rows, fields) => {
+    if(err){
+      next(err);
+      return;
+    }
       context.Managers = JSON.stringify(rows)
       res.render('projectlist', context);
     });
@@ -352,8 +368,20 @@ app.get('/project.html',function(req,res,next){
       next(err);
       return;
     }
-    context.results = JSON.stringify(rows);
-    res.send(context);
+    context.Tasks = JSON.stringify(rows);
+    res.render('project', context)
+  });
+});
+
+app.get('/tasklist.html',function(req,res,next){
+  var context = {};
+  mysql.pool.query(getAllTasksQuery, (err, rows, fields) => {
+    if(err){
+      next(err);
+      return;
+    }
+    context.Tasks = JSON.stringify(rows);
+    res.render('tasklist', context)
   });
 });
 
