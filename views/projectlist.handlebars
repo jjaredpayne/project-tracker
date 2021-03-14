@@ -95,16 +95,16 @@
             {{#each Project}}
 			  <tr id="{{this.projectID}}">
 				<td class="title" id="{{this.projectID}}" name="title"><a href="project.html?id={{this.projectID}}">{{this.title}}</a></td>
-				<td class="percentComplete" id="{{this.projectID}}"><form id="{{this.projectID}}"><input type="number" name="percentComplete" disabled=true>{{this.percentComplete}}</input></form></td>
+				<td class="percentComplete" id="{{this.projectID}}"><form id="{{this.projectID}}"><input type="number" name="percentComplete">{{this.percentComplete}}</input></form></td>
 				<td class=Status><form id="{{this.projectID}}">          	
-                    <select class="form-control-sm" id="inputStatus" name="status" disabled=true>
+                    <select class="form-control-sm" id="inputStatus" name="status">
                 		<option selected>{{this.status}}</option>
                 		<option value="1">Scheduled</option>
 					    <option value="2">On Schedule</option>
 					    <option value="3">Waiting</option>
 					    <option value="4">Blocked</option>
               		</select></form></td>
-				<td class="due-date" id="{{this.projectID}}"><form id="{{this.projectID}}"><input type="date" disabled=true name="dueDate">{{this.dueDate}}</form></td>
+				<td class="due-date" id="{{this.projectID}}"><form id="{{this.projectID}}"><input type="date" name="dueDate">{{this.dueDate}}</form></td>
               <td><button id="delete" value="{{this.projectID}}" class="btn btn-outline-secondary mb-2 btn-sm tableButton"
                   id="tableButton">Delete</button></td>
               <td><button type="edit" value="{{this.projectID}}" class="btn btn-outline-secondary mb-2 btn-sm tableButton"

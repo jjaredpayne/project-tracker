@@ -2,11 +2,7 @@ var nodeURL = 'http://flip3.engr.oregonstate.edu:8916/';
 
 //Inserts a row below the row to be edited. Populates with fields to capture
 //update data. Then, allows the data updates to be submitted.
-<<<<<<< HEAD
-function bindEditButton(employeeID, firstName, lastName) {
-=======
 function bindEditButtonDeveloper(employeeID, firstName, lastName, totalTasks) {
->>>>>>> df14400c897a33c09d99cef76c003d968e6986b6
     console.log("edit button " + employeeID + " " + firstName);
     //Bind Edit Button and manipulate DOM fields to create 'edit' row.
     document.getElementById('editButton' + employeeID).addEventListener('click', function (event) {
@@ -39,8 +35,6 @@ function bindEditButtonDeveloper(employeeID, firstName, lastName, totalTasks) {
 }
 ;
 
-<<<<<<< HEAD
-=======
 function bindEditButtonManager(employeeID, firstName, lastName, managementStyle) {
     console.log("edit button " + employeeID + " " + firstName);
     //Bind Edit Button and manipulate DOM fields to create 'edit' row.
@@ -82,7 +76,6 @@ function bindEditButtonManager(employeeID, firstName, lastName, managementStyle)
 ;
 
 
->>>>>>> df14400c897a33c09d99cef76c003d968e6986b6
 
 
 
