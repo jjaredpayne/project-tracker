@@ -338,14 +338,6 @@ app.get('/projectlist.html',function(req,res,next){
       return;
     }
     context.Project = JSON.stringify(rows);
-  pool.query(getManagersQuery, (err, rows, fields) => {
-    if(err){
-      next(err);
-      return;
-    }
-      context.Managers = JSON.stringify(rows)
-      res.render('projectlist', context);
-    });
   });
 });
 
