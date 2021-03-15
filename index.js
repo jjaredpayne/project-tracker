@@ -40,31 +40,25 @@ const deleteDeveloper = "DELETE FROM Developers WHERE Developers.employeeID = ";
 const getProjectQuery =`SELECT 
     projectID, title, percentComplete, projectStatus AS status, SUBSTRING(plannedEnd, 1, 10) AS dueDate
   FROM Projects`;
-const getAllTasksQuery = `SELECT
-  Tasks.taskID,
-  title,
-  taskDetails,
-  AssignedTasks.developerID AS "developerID"
-  CONCAT (Employees.firstName, ' ', Employees.lastName) AS "owner"
-  dueDate,
-  AssignedTasks.satisfaction AS "satisfaction"
-  FROM Tasks
-  JOIN AssignedTasks ON
-    AssignedTasks.taskID = Tasks.taskID
-  JOIN Developers ON
-    Developers.developerID = AssignedTasks.developerID
-  JOIN Employees ON
-    Employees.employeeID = Developers.employeeID
-  WHERE completed = 0`
-//const getProjectIDQuery = "SELECT projectID FROM Projects where title=?;"
+const getIncompleteTasksQuery = `SELECT taskID, Tasks.title as title, taskDetails,
+  SUBSTRING(dueDate, 1, 10) AS dueDate, Tasks.projectID, Projects.title AS projectTitle
+  FROM Tasks 
+  JOIN Projects ON Projects.projectID = Tasks.projectID
+  WHERE completed = 0 `;
+const getCompleteTasksQuery = `SELECT taskID, title, taskDetails,
+  SUBSTRING(dueDate, 1, 10) AS dueDate, Tasks.projectID, Projects.title AS projectTitle
+  FROM Tasks 
+  JOIN Projects ON Projects.projectID = tasks.ProjectID
+  WHERE completed = 0 `;
 const insertProjectQuery = "INSERT INTO Projects(`title`, `plannedEnd`, `projectStatus`) VALUES (?,?,?) ";
-//const insertManagedProjectQuery = "INSERT INTO ManagedProjects (`projectID`, `managerID`) VALUES (?,?) ";
-const insertTaskQuery = "INSERT INTO Tasks (`projectID`, `title`, `taskDetails`, `dueDate`) VALUES (?,?,?,?) ";
 const deleteProjectQuery = "DELETE FROM Projects WHERE projectID=? ";
 const deleteProjectTasks = "DELETE FROM Tasks WHERE projectID=? ";
 const deleteTaskQuery = "DELETE FROM Tasks WHERE taskID=? ";
+const deleteAssignedTask = "DELETE FROM AssignedTasks WHERE taskID=? "
 const updateProjectQuery = "UPDATE Projects SET title=?, percentComplete=?, plannedEnd=?, projectStatus=? WHERE projectID=? ";
 const updateTaskQuery = "UPDATE Tasks SET title=?, taskDetails=?, dueDate=?, completed=? WHERE taskID=? ";
+const markTaskComplete = "UPDTATE Tasks SET completed=1 WHERE taskID=? "
+const getAllProjects = "SELECT title AS name, projectID AS id FROM Projects ";
 
 //Create mysql pool
 var pool = mysql.createPool({
@@ -378,16 +372,90 @@ app.put('/projectlist.html', function(req,res,next){
     });
   });
 
-/*app.get('alltasks',function(req,res,next){
+app.get('/tasklist.html',function(req,res,next){
   var Task = {};
-  pool.query(getAllTasksQuery, (err, rows, fields) => {
+  pool.query(getIncompleteTasksQuery, (err, rows, fields) => {
+    if(err){
+      next(err);
+      return;
+    }
+    Task = JSON.parse(JSON.stringify(rows));
+    res.render('tasklist', {Task:Task})
+  });
+});
+
+/*app.get('/completeTasks',function(req,res,next){
+  var Task = {};
+  pool.query(getCompleteTasksQuery, (err, rows, fields) => {
     if(err){
       next(err);
       return;
     }
     Task = JSON.parse(JSON.stringify(rows));
     console.log(Task);
-    res.render('tasklist', {Task:Task})
+    res.send(Task);
+  });
+});*/
+
+app.get('/getProjects',function(req,res,next){
+  var Project = {};
+  pool.query(getAllProjects, (err, rows, fields) => {
+    if(err){
+      next(err);
+      return;
+    }
+    Project = JSON.parse(JSON.stringify(rows));
+    res.send(Project);
+  });
+});
+
+app.post('/tasklist.html',function(req,res,next) {
+  var insertID = null;
+
+  pool.query("INSERT INTO Tasks (title, taskDetails, projectID, dueDate) VALUES(?,?,?,?)",[req.body.title, req.body.comments, req.body.project, req.body.dueDate], function (err, result) {
+    console.log(err);
+    insertID = result.insertId
+    pool.query("INSERT INTO AssignedTasks (taskID, developerID, satisfaction) VALUES (?,?,?)", [insertID, req.body.developer, req.body.satisfaction], function (err, result) {
+    });
+    context.results = "Updated " + result.changedRows + " rows.";
+    res.send(context);
+  });
+});
+
+
+app.delete('/tasklist.html', function(req,res,next){
+  console.log(req);
+  var context = {};
+  console.log(req);
+  pool.query(deleteAssignedTask, req.body.id, (err, result) => {
+    if(err){
+      next(err);
+      return;
+    }
+  });
+  pool.query(deleteTaskQuery, req.body.id, (err, result) => {
+    if(err){
+      next(err);
+      return;
+    }
+    context.results = "Deleted " + result.changedRows + " rows.";
+    res.send(context);
+  });
+});
+
+
+/*app.put('/projectlist.html',function(req,res,next){
+  var context = {};
+  var {title, percentComplete, plannedEnd, projectStatus, id} = req.body;
+  pool.query(updateProjectQuery,
+    [title, percentComplete, plannedEnd, projectStatus, id],
+    (err, result) =>{
+    if(err){
+      next(err);
+      return;
+    }
+    context.results = "Updated " + result.changedRows + " rows.";
+    res.send(context);
   });
 });*/
 

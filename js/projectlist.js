@@ -40,7 +40,7 @@ table.addEventListener('click', async (event) => {
           id: row.id
       };
 
-      console.log(typeof payload);
+      console.log(payload);
 
       let response = await fetch('/projectlist.html', {
           method: "DELETE",
@@ -56,4 +56,4 @@ table.addEventListener('click', async (event) => {
 
   return;
 });
-;
+
