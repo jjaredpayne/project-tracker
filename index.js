@@ -1,4 +1,5 @@
 var express = require('express');
+var bodyParser = require('body-parser');
 var session = require('express-session');
 var request = require('request');
 var CORS = require('cors');
@@ -6,6 +7,12 @@ var app = express();
 var handlebars = require('express-handlebars').create({defaultLayout: 'main'});
 var mysql = require('mysql');
 
+var app = express();
+var handlebars = require('express-handlebars').create({defaultLayout: 'main'});
+var mysql = require('mysql');
+
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false}));
 app.use(CORS());
