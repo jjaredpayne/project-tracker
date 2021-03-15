@@ -1,13 +1,14 @@
 var express = require('express');
-var bodyParser = require('body-parser');
 var session = require('express-session');
 var request = require('request');
+var CORS = require('cors');
 var app = express();
 var handlebars = require('express-handlebars').create({defaultLayout: 'main'});
 var mysql = require('mysql');
 
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: false}));
+app.use(CORS());
 app.use(session({secret: 'SuperSecretPassword'}));
 app.use(express.static('public'));
 app.use(express.static('js'));
@@ -37,7 +38,7 @@ const deleteManager = "DELETE FROM Managers WHERE Managers.employeeID = ";
 const deleteAssignedProjects = "DELETE AssignedTasks FROM AssignedTasks WHERE AssignedTasks.developerID IN (SELECT Developers.developerID FROM Developers WHERE Developers.employeeID = ";
 const deleteDeveloper = "DELETE FROM Developers WHERE Developers.employeeID = ";
 const getProjectQuery =`SELECT 
-    projectID, title, percentComplete, projectStatus AS status, plannedEnd AS dueDate
+    projectID, title, percentComplete, projectStatus AS status, SUBSTRING(plannedEnd, 1, 10) AS dueDate
   FROM Projects`;
 const getAllTasksQuery = `SELECT
   Tasks.taskID,
@@ -315,7 +316,6 @@ app.get('/projectlist.html',function(req,res,next){
       return;
     }
     Project = JSON.parse(JSON.stringify(rows));
-    console.log(Project);
     res.render('projectlist', {Project:Project})
   });
 });
@@ -339,42 +339,46 @@ app.post('/projectlist.html',function(req,res,next){
       return;
     }
     Project = JSON.parse(JSON.stringify(rows));
-    console.log(Project);
     res.render('projectlist', {Project:Project})
   });
 });
 
-/*app.delete('/deleteProject', function (req, res, next) {
-  let context = {};
-  pool.query(deleteProjectTasks + req.body.rowId , function (err, rows, results) {
-    if(err) {
-      next(err);
-      return;
-    }
-  });
-  pool.query(deleteProjectQuery + req.body.rowId, function (err, rows, results) {
+app.delete('/projectlist.html', function(req,res,next){
+  console.log("in delete");
+  var context = {};
+  pool.query(deleteProjectTasks, req.body.id, (err, result) => {
     if(err){
       next(err);
       return;
     }
-    res.send({results: results});
   });
-});*/
-
-//"UPDATE Projects SET title=?, percentComplete=?, plannedEnd=?, projectStatus=? WHERE projectID=? ";
-app.put('/projectlist.html', function (req, res, next) {
-  let context = {};
-  pool.query(updateProjectQuery, 
-    [req.body.title, req.body.percentComplete, req.body.dueDate, req.body.status, req.body.submitID] , function (err, rows, results) {
+  pool.query(deleteProjectQuery, req.body.id, (err, result) => {
     if(err){
       next(err);
       return;
     }
-    res.send({results: results});
+    context.results = "Deleted " + result.changedRows + " rows.";
+    res.send(context);
   });
 });
 
-app.get('/tasklist.html',function(req,res,next){
+//"UPDATE Projects SET title=?, percentComplete=?, plannedEnd=?, projectStatus=? WHERE projectID=? ";
+app.put('/projectlist.html', function(req,res,next){
+  let context = {};
+  console.log(req.body)
+  console.log(req.body.title)
+  pool.query(updateProjectQuery, 
+    [req.body.title, req.body.percentComplete, req.body.dueDate, req.body.status, req.body.id] , (err, result) =>{
+      if(err){
+        next(err);
+        return;
+      }
+      context.results = "Updated " + result.changedRows + " rows.";
+      res.send(context);
+    });
+  });
+
+/*app.get('alltasks',function(req,res,next){
   var Task = {};
   pool.query(getAllTasksQuery, (err, rows, fields) => {
     if(err){
@@ -384,38 +388,6 @@ app.get('/tasklist.html',function(req,res,next){
     Task = JSON.parse(JSON.stringify(rows));
     console.log(Task);
     res.render('tasklist', {Task:Task})
-  });
-});
-
-/*app.delete('/projectlist.html',function(req,res,next){
-  var Project = {};
-  var {id} = req.body;
-  console.log("deleting a project")
-  console.log(id)
-  pool.query(deleteProjectTasks+ [id], function (err, rows, results) {
-  });
-  pool.query(deleteProjectQuery+ [id], function (err, rows, results) {
-  });
-  pool.query(getProjectQuery, function (err, rows, results) {
-    Project = JSON.parse(JSON.stringify(rows));
-    console.log(Project);
-    res.render('projectlist', {Project:Project});
-  });
-});*/
-
-
-/*app.put('/projectlist.html',function(req,res,next){
-  var context = {};
-  var {title, percentComplete, plannedEnd, projectStatus, id} = req.body;
-  pool.query(updateProjectQuery,
-    [title, percentComplete, plannedEnd, projectStatus, id],
-    (err, result) =>{
-    if(err){
-      next(err);
-      return;
-    }
-    context.results = "Updated " + result.changedRows + " rows.";
-    res.send(context);
   });
 });*/
 

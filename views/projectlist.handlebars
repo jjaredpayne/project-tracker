@@ -92,16 +92,21 @@
 			</thead>
           <tbody>
             {{#each Project}}
-			  <tr id="row{{this.projectID}}">
-				<td id="titleCell{{this.projectID}}">{{this.title}}</td>
-				<td id="percentCompleteCell{{this.projectID}}">{{this.percentComplete}}</td>
-				<td id="statusCell{{this.projectID}}">{{this.status}}</td>
-				<td id="dueDateCell{{this.projectID}}">{{this.dueDate}}</td>
-              <td><form action="/deleteProject" method="delete">
-                          <button type="submit" class="btn btn-outline-secondary mb-2 btn-sm tableButton" id="rowId" name="rowId" value="{{this.projectID}}">Delete</button>
-                          </form></td>
-              <td><button type="submit" class="btn btn-outline-secondary mb-2 btn-sm tableButton" id="editButton{{this.employeeID}}" 
-			  onclick="bindEditButton('{{this.projectID}}', '{{this.title}}', '{{this.percentComplete}}','{{this.status}}', '{{this.dueDate}}')">Edit</button></td>
+			  <tr id="{{this.projectID}}">
+				<td><input type='text' class='form-control' name='title' value='{{this.title}}'></input></td>
+				<td><input type='text' class='form-control' name='percentComplete' value='{{this.percentComplete}}'></input></td>
+				<td id="statusCell{{this.projectID}}">
+					<select class="form-control-sm" name="status">
+                		<option selected value="{{this.status}}">{{this.status}}</option>
+                		<option value="1">1 - Scheduled</option>
+                		<option value="2">2 - On Track</option>
+                		<option value="3">3 - Waiting</option>
+                		<option value="4">4 - Blocked</option>
+              		</select>
+				</td>
+				<td><input type='date'class='form-control' name="dueDate" value='{{this.dueDate}}'></input></td>
+              	<td><button type="submit" class="btn btn-outline-secondary mb-2 btn-sm tableButton" id="edit">Edit</button></td>
+			    <td><button type="submit" class="btn btn-outline-secondary mb-2 btn-sm tableButton" id="delete">Delete</button></td>
 			  </tr>
               {{/each}}
           </tbody>
