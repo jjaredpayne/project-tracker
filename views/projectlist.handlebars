@@ -39,16 +39,15 @@
 		<div class="profile-creator">
 		  <div class="row">
 			<div class = "col-md-6 gy-3">
-			  <form class="row g-3">
+			  <form class="row g-3" action="/projectlist.html" method="post">
 				<div class="col-md-6">
 				  <span class="input-group-text" for="basic=inputProjectTitle">Project Title</label>
-				  <input type="Text" class="form-control" id="inputProjectTitle">
+				  <input type="Text" class="form-control" id="title" name="title">
 				</div>
 				<div class="col-md-12">
 				  <span class="input-group-text" for="basic=inputStatus">Status</label>
-				  <select class="form-select" id="inputStatus">
-					  <option selected>Scheduled</option>
-					  <option value="1">Scheduled</option>
+				  <select class="form-select" id="status" name="status">
+					  <option value="1" selected>Scheduled</option>
 					  <option value="2">On Schedule</option>
 					  <option value="3">Waiting</option>
 					  <option value="4">Blocked</option>
@@ -56,10 +55,10 @@
 				</div>
 				<div class="col-md-12">
 				  <span class="input-group-text" for="basic=inputDueDate">Due Date</label>
-				<input type="Date" class="form-control" id="inputDuedate">
+				<input type="Date" class="form-control" id="dueDate" name="dueDate">
 				</div>
 				<div class="col-12">
-              		<button type="submit" class="btn btn-primary" id="registerEmployees" onclick="addProject()">Add Project</button>
+              		<button type="submit" class="btn btn-primary" id="registerEmployees" onsubmit="setTimeout(function () { window.location.reload(); }, 10)">Add Project</button>
             	</div>
 			  </form>
 			</div>
@@ -93,22 +92,16 @@
 			</thead>
           <tbody>
             {{#each Project}}
-			  <tr id="{{this.projectID}}">
-				<td class="title" id="{{this.projectID}}" name="title"><a href="project.html?id={{this.projectID}}">{{this.title}}</a></td>
-				<td class="percentComplete" id="{{this.projectID}}"><form id="{{this.projectID}}"><input type="number" name="percentComplete">{{this.percentComplete}}</input></form></td>
-				<td class=Status><form id="{{this.projectID}}">          	
-                    <select class="form-control-sm" id="inputStatus" name="status">
-                		<option selected>{{this.status}}</option>
-                		<option value="1">Scheduled</option>
-					    <option value="2">On Schedule</option>
-					    <option value="3">Waiting</option>
-					    <option value="4">Blocked</option>
-              		</select></form></td>
-				<td class="due-date" id="{{this.projectID}}"><form id="{{this.projectID}}"><input type="date" name="dueDate">{{this.dueDate}}</form></td>
-              <td><button id="delete" value="{{this.projectID}}" class="btn btn-outline-secondary mb-2 btn-sm tableButton"
-                  id="tableButton">Delete</button></td>
-              <td><button type="edit" value="{{this.projectID}}" class="btn btn-outline-secondary mb-2 btn-sm tableButton"
-                  id="tableButton">Edit</button></td>
+			  <tr id="row{{this.projectID}}">
+				<td id="titleCell{{this.projectID}}">{{this.title}}</td>
+				<td id="percentCompleteCell{{this.projectID}}">{{this.percentComplete}}</td>
+				<td id="statusCell{{this.projectID}}">{{this.status}}</td>
+				<td id="dueDateCell{{this.projectID}}">{{this.dueDate}}</td>
+              <td><form action="/deleteProject" method="delete">
+                          <button type="submit" class="btn btn-outline-secondary mb-2 btn-sm tableButton" id="rowId" name="rowId" value="{{this.projectID}}">Delete</button>
+                          </form></td>
+              <td><button type="submit" class="btn btn-outline-secondary mb-2 btn-sm tableButton" id="editButton{{this.employeeID}}" 
+			  onclick="bindEditButton('{{this.projectID}}', '{{this.title}}', '{{this.percentComplete}}','{{this.status}}', '{{this.dueDate}}')">Edit</button></td>
 			  </tr>
               {{/each}}
           </tbody>

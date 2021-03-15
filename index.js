@@ -320,7 +320,7 @@ app.get('/projectlist.html',function(req,res,next){
   });
 });
 
-app.post('/addProject',function(req,res,next){
+app.post('/projectlist.html',function(req,res,next){
   pool.query(insertProjectQuery, 
     [req.body.title, req.body.dueDate, req.body.status], 
     (err, result) =>{
@@ -329,8 +329,18 @@ app.post('/addProject',function(req,res,next){
       next(err);
       return;
     }
-    console.log("Sending result.");
-    res.send({result: result});
+    console.log("Row added.");
+  });
+  var Project = {};
+  pool.query(getProjectQuery, (err, rows, fields) => {
+    if(err){
+      console.log("Get query failed.");
+      next(err);
+      return;
+    }
+    Project = JSON.parse(JSON.stringify(rows));
+    console.log(Project);
+    res.render('projectlist', {Project:Project})
   });
 });
 
@@ -352,7 +362,7 @@ app.post('/addProject',function(req,res,next){
 });*/
 
 //"UPDATE Projects SET title=?, percentComplete=?, plannedEnd=?, projectStatus=? WHERE projectID=? ";
-app.put('/updateProject', function (req, res, next) {
+app.put('/projectlist.html', function (req, res, next) {
   let context = {};
   pool.query(updateProjectQuery, 
     [req.body.title, req.body.percentComplete, req.body.dueDate, req.body.status, req.body.submitID] , function (err, rows, results) {
@@ -364,7 +374,7 @@ app.put('/updateProject', function (req, res, next) {
   });
 });
 
-app.get('tasklist.html',function(req,res,next){
+app.get('/tasklist.html',function(req,res,next){
   var Task = {};
   pool.query(getAllTasksQuery, (err, rows, fields) => {
     if(err){
