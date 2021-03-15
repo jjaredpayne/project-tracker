@@ -13,20 +13,19 @@ table.addEventListener('click', async (event) => {
       createAddRow(row);
   }
 
-  /*if (target.id == "edit") {
+  if (target.id == "edit") {
       console.log(row.id);
       console.log("Registered you hit the edit button");
       let str = {
           title: row.querySelector('[name="title"]').value,
-          percentComplete: row.querySelector('[name="percentComplete"]').value,
-          status: row.querySelector('[name="status"]').value,
+          comments: row.querySelector('[name="taskDetails"]').value,
           dueDate: row.querySelector('[name="dueDate"]').value,
-          id: row.id
+          id: target.value
       }
       
       console.log(str);
           
-      let response = await fetch('/projectlist.html', {
+      let response = await fetch('/tasklist.html', {
           method: "PUT",
           headers: {
               'Content-Type': 'application/json'
@@ -37,7 +36,7 @@ table.addEventListener('click', async (event) => {
       console.log(result);
 
       location.reload();
-  }*/
+  }
 
   else if(target.id =="add"){
       console.log("Registered you hit the submit button!");
@@ -47,8 +46,6 @@ table.addEventListener('click', async (event) => {
           comments: row.querySelector('[name="comments"]').value,
           project: row.querySelector('[name="project"]').value,
           dueDate: row.querySelector('[name="dueDate"]').value,
-          developer: row.querySelector('[name="developer"]').value,
-          satisfaction: row.querySelector('[name="satisfaction"]').value
       }
 
 
@@ -77,7 +74,7 @@ table.addEventListener('click', async (event) => {
 
       console.log(payload);
 
-      let response = await fetch('/projectlist.html', {
+      let response = await fetch('/tasklist.html', {
           method: "DELETE",
           headers: {
               'Content-Type': 'application/json'
@@ -86,7 +83,7 @@ table.addEventListener('click', async (event) => {
       });
       event.preventDefault();
 
-      //location.reload();
+      location.reload();
   }
 
   return;
