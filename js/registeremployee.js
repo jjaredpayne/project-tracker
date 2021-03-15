@@ -34,11 +34,11 @@ function registerEmployee(){
             });
             req.send(null);
             console.log("attemptingn to insert manager/developer")
-            if(payload.workRole === '1'){
+            if(payload.workRole === '2'){
                 console.log("attemptingn to insert manager");
                 insertManager();
             }
-            else if(payload.workRole === '2'){
+            else if(payload.workRole === '1'){
                 console.log("attemptingn to insert developer");
                 insertDeveloper();
             }
