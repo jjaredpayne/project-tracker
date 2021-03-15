@@ -55,11 +55,12 @@ const getAllTasksQuery = `SELECT
   JOIN Employees ON
     Employees.employeeID = Developers.employeeID
   WHERE completed = 0`
-const getProjectIDQuery = "SELECT projectID FROM Projects where title=?;"
-const insertProjectQuery = "INSERT INTO Projects(`title`, `percentComplete`, `plannedEnd`, `projectStatus`) VALUES (?,?,?,?) ";
-const insertManagedProjectQuery = "INSERT INTO ManagedProjects (`projectID`, `managerID`) VALUES (?,?) ";
+//const getProjectIDQuery = "SELECT projectID FROM Projects where title=?;"
+const insertProjectQuery = "INSERT INTO Projects(`title`, `plannedEnd`, `projectStatus`) VALUES (?,?,?) ";
+//const insertManagedProjectQuery = "INSERT INTO ManagedProjects (`projectID`, `managerID`) VALUES (?,?) ";
 const insertTaskQuery = "INSERT INTO Tasks (`projectID`, `title`, `taskDetails`, `dueDate`) VALUES (?,?,?,?) ";
 const deleteProjectQuery = "DELETE FROM Projects WHERE projectID=? ";
+const deleteProjectTasks = "DELETE FROM Tasks WHERE projectID=? ";
 const deleteTaskQuery = "DELETE FROM Tasks WHERE taskID=? ";
 const updateProjectQuery = "UPDATE Projects SET title=?, percentComplete=?, plannedEnd=?, projectStatus=? WHERE projectID=? ";
 const updateTaskQuery = "UPDATE Tasks SET title=?, taskDetails=?, dueDate=?, completed=? WHERE taskID=? ";
@@ -319,19 +320,51 @@ app.get('/projectlist.html',function(req,res,next){
   });
 });
 
-/*app.get('/project.html',function(req,res,next){
-  var context = {};
-  pool.query(getTaskQuery, req.query.id, (err, rows, fields) => {
+app.post('/addProject',function(req,res,next){
+  pool.query(insertProjectQuery, 
+    [req.body.title, req.body.dueDate, req.body.status], 
+    (err, result) =>{
+    if(err){
+      console.log("I am in the error for some reason");
+      next(err);
+      return;
+    }
+    console.log("Sending result.");
+    res.send({result: result});
+  });
+});
+
+/*app.delete('/deleteProject', function (req, res, next) {
+  let context = {};
+  pool.query(deleteProjectTasks + req.body.rowId , function (err, rows, results) {
+    if(err) {
+      next(err);
+      return;
+    }
+  });
+  pool.query(deleteProjectQuery + req.body.rowId, function (err, rows, results) {
     if(err){
       next(err);
       return;
     }
-    context.Tasks = JSON.stringify(rows);
-    res.render('project', context)
+    res.send({results: results});
   });
 });*/
 
-app.get('alltasks',function(req,res,next){
+//"UPDATE Projects SET title=?, percentComplete=?, plannedEnd=?, projectStatus=? WHERE projectID=? ";
+app.put('/updateProject', function (req, res, next) {
+  let context = {};
+  pool.query(updateProjectQuery, 
+    [req.body.title, req.body.percentComplete, req.body.dueDate, req.body.status, req.body.submitID] , function (err, rows, results) {
+    if(err){
+      next(err);
+      return;
+    }
+    res.send({results: results});
+  });
+});
+
+/*app.get('alltasks',function(req,res,next){
   var Task = {};
   pool.query(getAllTasksQuery, (err, rows, fields) => {
     if(err){
@@ -342,84 +375,29 @@ app.get('alltasks',function(req,res,next){
     console.log(Task);
     res.render('tasklist', {Task:Task})
   });
-});
+});*/
 
-app.post('/projectlist.html',function(req,res,next){
-  var {title, percentComplete, plannedEnd, projectStatus, userID} = req.body;
-  mysql.pool.query(insertProjectQuery, 
-    [title, percentComplete, plannedEnd, projectStatus], 
-    (err, result) =>{
-    if(err){
-      next(err);
-      return;
-    }
-  });
-
-    mysql.pool.query(getProjectIDQuery, title, (err, rows, fields) => {
-      if(err){
-        next(err);
-        return;
-      }
-      context.results = rows;
-  
-    mysql.pool.query(insertManagedProjectQuery, 
-      context.results, userID,
-      (err, result) =>{
-      if(err){
-        next(err);
-        return;
-      }
-
-      });
-    });
-
-    console.log("Sending result.");
-    res.send({result: result});
-});
-
-app.post('/project.html',function(req,res,next){
-  var {projectID, title, taskDetails, dueDate} = req.body;
-  mysql.pool.query(insertTaskQuery, 
-    [projectID, title, taskDetails, dueDate], 
-    (err, result) =>{
-    if(err){
-      next(err);
-      return;
-    }
-    //getAllData();
-  });
-});
-
-app.delete('/projectlist.html',function(req,res,next){
-  var context = {};
+/*app.delete('/projectlist.html',function(req,res,next){
+  var Project = {};
   var {id} = req.body;
-  mysql.pool.query(deleteProjectQuery, [id], (err, result) => {
-    if(err){
-      next(err);
-      return;
-    }
-    context.results = "Deleted " + result.changedRows + " rows.";
-    res.send(context);
+  console.log("deleting a project")
+  console.log(id)
+  pool.query(deleteProjectTasks+ [id], function (err, rows, results) {
   });
-});
-
-app.delete('/project.html',function(req,res,next){
-  var context = {};
-  var {id} = req.body;
-  mysql.pool.query(deleteTaskQuery, [id], (err, result) => {
-    if(err){
-      next(err);
-      return;
-    }
-    context.results = "Deleted " + result.changedRows + " rows.";
-    res.send(context);
+  pool.query(deleteProjectQuery+ [id], function (err, rows, results) {
   });
-});
+  pool.query(getProjectQuery, function (err, rows, results) {
+    Project = JSON.parse(JSON.stringify(rows));
+    console.log(Project);
+    res.render('projectlist', {Project:Project});
+  });
+});*/
 
-app.put('/projectlist.html',function(req,res,next){
+
+/*app.put('/projectlist.html',function(req,res,next){
   var context = {};
   var {title, percentComplete, plannedEnd, projectStatus, id} = req.body;
-  mysql.pool.query(updateProjectQuery,
+  pool.query(updateProjectQuery,
     [title, percentComplete, plannedEnd, projectStatus, id],
     (err, result) =>{
     if(err){
@@ -429,22 +407,8 @@ app.put('/projectlist.html',function(req,res,next){
     context.results = "Updated " + result.changedRows + " rows.";
     res.send(context);
   });
-});
+});*/
 
-app.put('/project.html',function(req,res,next){
-  var context = {};
-  var {title, taskDetails, dueDate, completed, id} = req.body;
-  mysql.pool.query(updateTaskQuery,
-    [title, taskDetails, dueDate, completed, id],
-    (err, result) =>{
-    if(err){
-      next(err);
-      return;
-    }
-    context.results = "Updated " + result.changedRows + " rows.";
-    res.send(context);
-  });
-});
 
 app.listen(app.get('port'), function () {
   console.log('Express started on http://flip3.engr.oregonstate.edu' + app.get('port') + '; press Ctrl-C to terminate.');
