@@ -1,4 +1,4 @@
-  <header>
+ <header>
     <div class="logo">PROJECT TRACKER</div>
     <nav>
       <ul>
@@ -124,20 +124,16 @@
                         <form action="/deleteManager" method="post">
                         <button type="submit" class="btn btn-outline-secondary mb-2 btn-sm tableButton" id="rowId" name="rowId" value="{{this.employeeID}}">Delete</button>
                         </form>
-                      {{else}}
-                      <form action="/deleteManager" method="post">
-                      <button type="submit" class="btn btn-outline-secondary mb-2 btn-sm tableButton" id="rowId" name="rowId" value="{{this.employeeID}}">Delete</button>
-                      </form>
-                      {{/if}}
+                      </td>
+                    <td id="cellEditButton{{this.employeeID}}">
+                      <button type="submit" class="btn btn-outline-secondary mb-2 btn-sm tableButton" id="editButton{{this.employeeID}}" onclick="bindEditButtonManager('{{this.employeeID}}', '{{this.firstName}}', '{{this.lastName}}','{{this.managementStyle}}')">Edit</button>
                     </td>
-                  <td id="cellEditButton{{this.employeeID}}">
-                    <button type="submit" class="btn btn-outline-secondary mb-2 btn-sm tableButton" id="editButton{{this.employeeID}}" onclick="bindEditButton('{{this.employeeID}}', '{{this.firstName}}', '{{this.lastName}}')">Edit</button>
-                  </td>
-                </tr>
-            {{/each}}
-          </tbody>
-        </table>
+                  </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+    {{/if}}
 
     <script type="text/javascript" src="profile.js" language="javascript"></script>
