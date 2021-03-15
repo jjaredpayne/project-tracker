@@ -364,7 +364,7 @@ app.put('/updateProject', function (req, res, next) {
   });
 });
 
-/*app.get('alltasks',function(req,res,next){
+app.get('tasklist.html',function(req,res,next){
   var Task = {};
   pool.query(getAllTasksQuery, (err, rows, fields) => {
     if(err){
@@ -375,7 +375,7 @@ app.put('/updateProject', function (req, res, next) {
     console.log(Task);
     res.render('tasklist', {Task:Task})
   });
-});*/
+});
 
 /*app.delete('/projectlist.html',function(req,res,next){
   var Project = {};
