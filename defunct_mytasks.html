@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>{NAME}'s tasks</title>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+	<link rel="stylesheet" type="text/css" href="css/profile.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+</head>
+<body>
+
+	<header>
+        <div class="logo">PROJECT TRACKER</div>
+        <nav>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="createprofile.html">Register Employee</a></li>
+            <li><a href="mypage.html">Employee Profiles</a></li>
+            <li><a href="project_list.html">Projects</a></li>
+            <li><a href="#" class="active">Tasks</a></li>
+          </ul>
+        </nav>
+        <div class="menu_toggle">
+          <i class="fa fa-bars" aria-hidden="true"></i>
+        </div>
+    </header>
+
+<div class="profile-creator">
+  <div class="my-task-container">
+
+    <div> <button>Add Task</button>
+        <fieldset>
+            <form id='addTaskFrom'>
+                <label>Project: </label>
+                <select id="projectTitle" name="projectTitle"> 
+                    <option value="1">Project 1</option>
+                    <option value="2">Project 2</option>
+                    <option value="3">Project 3</option>
+                    <option value="4">Project 4</option>
+                </select>
+                <br />
+                <label>Task Title: </label> <input type="text" name="taskTitle" id="taskTitle" />
+                <br />
+                <label> Task Description: </label><input type="text" name="taskDesc" id="taskDesc">
+                <br />
+                <label>Assign To: </label><input type="text" name="assignTo" id="assignTo">
+                <br />
+            </form>
+        </fieldset>
+    </div>
+
+    <!-- Script will run here to build the project task list -->
+    <!-- Options will include an ability to modify/delete task.-->
+    <table id="projectTasksTable">
+        <tr class= "projectName" id="projectID"><td colspan=7 class="project">Project Name</td></tr>
+        <tr id = "task-id" class ="complete">
+            <td class="title">Task Title</td>
+            <td class="details">Comments go here</td>
+            <td class="owner">Sarah Bell</td>
+            <td class="due-date">10 August 2021</td>
+            <td class="edit"><button>Edit Task</button></td>
+            <td class="mark-complete"><button>Mark Complete</button></td>
+            <td class="delete"><button>Delete Task</button></td>
+        </tr>
+        <tr id = "task-id" class ="complete">
+            <td class="title">Task Title</td>
+            <td class="details">Comments go here</td>
+            <td class="owner">Sarah Bell</td>
+            <td class="due-date">10 August 2021</td>
+            <td class="edit"><button>Edit Task</button></td>
+            <td class="mark-complete"><button>Mark Complete</button></td>
+            <td class="delete"><button>Delete Task</button></td>
+        </tr>
+        <tr id = "task-id" class ="complete">
+            <td class="title">Task Title</td>
+            <td class="details">Comments go here</td>
+            <td class="owner">Sarah Bell</td>
+            <td class="due-date">10 August 2021</td>
+            <td class="edit"><button>Edit Task</button></td>
+            <td class="mark-complete"><button>Mark Complete</button></td>
+            <td class="delete"><button>Delete Task</button></td>
+        </tr>
+        <tr id = "task-id" class ="complete">
+            <td class="title">Task Title</td>
+            <td class="details">Comments go here</td>
+            <td class="owner">Sarah Bell</td>
+            <td class="due-date">10 August 2021</td>
+            <td class="edit"><button>Edit Task</button></td>
+            <td class="mark-complete"><button>Mark Complete</button></td>
+            <td class="delete"><button>Delete Task</button></td>
+        </tr>
+        <tr class= "projectName" id="projectID"><td colspan=7 class="project">Project Name</td></tr>
+        <tr id = "task-id" class ="complete">
+            <td class="title">Task Title</td>
+            <td class="details">Comments go here</td>
+            <td class="owner">Sarah Bell</td>
+            <td class="due-date">10 August 2021</td>
+            <td class="edit"><button>Edit Task</button></td>
+            <td class="mark-complete"><button>Mark Complete</button></td>
+            <td class="delete"><button>Delete Task</button></td>
+        </tr>
+        <tr id = "task-id" class ="complete">
+            <td class="title">Task Title</td>
+            <td class="details">Comments go here</td>
+            <td class="owner">Sarah Bell</td>
+            <td class="due-date">10 August 2021</td>
+            <td class="edit"><button>Edit Task</button></td>
+            <td class="mark-complete"><button>Mark Complete</button></td>
+            <td class="delete"><button>Delete Task</button></td>
+        </tr>
+        <tr id = "task-id" class ="complete">
+            <td class="title">Task Title</td>
+            <td class="details">Comments go here</td>
+            <td class="owner">Sarah Bell</td>
+            <td class="due-date">10 August 2021</td>
+            <td class="edit"><button>Edit Task</button></td>
+            <td class="mark-complete"><button>Mark Complete</button></td>
+            <td class="delete"><button>Delete Task</button></td>
+        </tr>
+        <tr id = "task-id" class ="complete">
+            <td class="title">Task Title</td>
+            <td class="details">Comments go here</td>
+            <td class="owner">Sarah Bell</td>
+            <td class="due-date">10 August 2021</td>
+            <td class="edit"><button>Edit Task</button></td>
+            <td class="mark-complete"><button>Mark Complete</button></td>
+            <td class="delete"><button>Delete Task</button></td>
+        </tr>
+        <tr class= "projectName" id="projectID"><td colspan=7 class="project">Project Name</td></tr>
+        <tr id = "task-id" class ="complete">
+            <td class="title">Task Title</td>
+            <td class="details">Comments go here</td>
+            <td class="owner">Sarah Bell</td>
+            <td class="due-date">10 August 2021</td>
+            <td class="edit"><button>Edit Task</button></td>
+            <td class="mark-complete"><button>Mark Complete</button></td>
+            <td class="delete"><button>Delete Task</button></td>
+        </tr>
+        <tr id = "task-id" class ="complete">
+            <td class="title">Task Title</td>
+            <td class="details">Comments go here</td>
+            <td class="owner">Sarah Bell</td>
+            <td class="due-date">10 August 2021</td>
+            <td class="edit"><button>Edit Task</button></td>
+            <td class="mark-complete"><button>Mark Complete</button></td>
+            <td class="delete"><button>Delete Task</button></td>
+        </tr>
+        <tr id = "task-id" class ="complete">
+            <td class="title">Task Title</td>
+            <td class="details">Comments go here</td>
+            <td class="owner">Sarah Bell</td>
+            <td class="due-date">10 August 2021</td>
+            <td class="edit"><button>Edit Task</button></td>
+            <td class="mark-complete"><button>Mark Complete</button></td>
+            <td class="delete"><button>Delete Task</button></td>
+        </tr>
+        <tr id = "task-id" class ="complete">
+            <td class="title">Task Title</td>
+            <td class="details">Comments go here</td>
+            <td class="owner">Sarah Bell</td>
+            <td class="due-date">10 August 2021</td>
+            <td class="edit"><button>Edit Task</button></td>
+            <td class="mark-complete"><button>Mark Complete</button></td>
+            <td class="delete"><button>Delete Task</button></td>
+        </tr>
+    </table>
+
+  </div>
+  </div>
+
+
+    <!--===============================================================================================-->	
+	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+        <script src="js/main.js"></script>
+        <script src="js/task.js"></script>
+    
+    </body>
+    </html>

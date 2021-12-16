@@ -1,0 +1,139 @@
+ <header>
+    <div class="logo">PROJECT TRACKER</div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="registeremployee.html">Register Employee</a></li>
+        <li><a href="#" class="active">Employee Profiles</a></li>
+        <li><a href="projectlist.html">Projects</a></li>
+        <li><a href="tasklist.html">Tasks</a></li>
+      </ul>
+    </nav>
+    <div class="menu_toggle">
+      <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+  </header>
+
+  <div class="profile-container">
+    <!-- Script will run here to build the profile. -->
+    <!-- Options will include an ability to modify profile. -->
+    <div class="intro">
+      <H5> Employees, view your profile details here. </H5>
+    </div>
+
+    <div class="profile-creator">
+      <div class="row">
+        <div class="col-md-6 gy-3">
+          <form class="row g-3" action="/displayEmployees" method="post">
+            <div class="col-md-6" id="A">
+              <span class="input-group-text" for="basic=firstName">First Name: </label>
+                <input type="Text" class="form-control" id="firstName" name="firstName">
+            </div>
+            <div class="col-md-6">
+              <span class="input-group-text" for="basic=lastName">Last Name: </label>
+                <input type="Text" class="form-control" id="lastName" name="lastName">
+            </div>
+            <div class="col-md-12">
+              <span class="input-group-text">Display: </label>
+                <select class="form-select" id = "workRole" name="workRole">
+                  {{#if developerID}}
+                    <option value="1" selected="1">Developers</option>
+                  {{/if}}
+                  {{#if managerID}}
+                    <option value="2" selected="2">Managers</option>
+                  {{/if}}
+                  <option value="1">Developers</option>
+                  <option value="2">Managers</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary" id="displayEmployees" value="Search">Display Selected</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <br>
+    {{!-- <button type="submit" class="btn btn-primary" id="displayEmployees" onclick="displayEmployees()">Display
+      Selected</button> --}}
+
+
+    {{!-- <H5> Managers will see details of all employees working on their projects and can search by last name.</H5>
+    <div class="col-md-4">
+      <div class="input-group rounded">
+        <input type="search" class="form-control rounded" placeholder="Search by Last Name" aria-label="Search"
+          aria-describedby="search-addon" />
+        <span class="input-group-text border-0" id="search-addon">
+          <i class="fas fa-search"></i>
+        </span>
+      </div> --}}
+    </div>
+
+    {{#if developerID}}
+      <div class="row">
+        <div class="col-sm-8">
+          <table class="table" id="profileTable">
+            <thead>
+              <tr>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Current Tasks</th>
+                <th scope="col">Delete</th>
+                <th scope="col">Edit</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each sqlresults}}
+                  <tr id="row{{this.employeeID}}">
+                    <td id="cellFirstName{{this.employeeID}}">{{this.firstName}}</td>
+                    <td id="cellLastName{{this.employeeID}}">{{this.lastName}}</td>
+                    <td>{{this.totalTasks}}</td>
+                      <td>     
+                          <form action="/deleteDeveloper" method="post">
+                          <button type="submit" class="btn btn-outline-secondary mb-2 btn-sm tableButton" id="rowId" name="rowId" value="{{this.employeeID}}">Delete</button>
+                          </form>
+                      </td>
+                    <td id="cellEditButton{{this.employeeID}}">
+                      <button type="submit" class="btn btn-outline-secondary mb-2 btn-sm tableButton" id="editButton{{this.employeeID}}" onclick="bindEditButtonDeveloper('{{this.employeeID}}', '{{this.firstName}}', '{{this.lastName}}','{{this.totalTasks}}')">Edit</button>
+                    </td>
+                  </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    {{/if}}
+    {{#if managerID}}
+      <div class="row">
+        <div class="col-sm-8">
+          <table class="table" id="profileTable">
+            <thead>
+              <tr>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Managment Style</th>
+                <th scope="col">Delete</th>
+                <th scope="col">Edit</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each sqlresults}}
+                  <tr id="row{{this.employeeID}}">
+                    <td id="cellFirstName{{this.employeeID}}">{{this.firstName}}</td>
+                    <td id="cellLastName{{this.employeeID}}">{{this.lastName}}</td>
+                    <td>{{this.managementStyle}}</td>
+                      <td>     
+                        <form action="/deleteManager" method="post">
+                        <button type="submit" class="btn btn-outline-secondary mb-2 btn-sm tableButton" id="rowId" name="rowId" value="{{this.employeeID}}">Delete</button>
+                        </form>
+                      </td>
+                    <td id="cellEditButton{{this.employeeID}}">
+                      <button type="submit" class="btn btn-outline-secondary mb-2 btn-sm tableButton" id="editButton{{this.employeeID}}" onclick="bindEditButtonManager('{{this.employeeID}}', '{{this.firstName}}', '{{this.lastName}}','{{this.managementStyle}}')">Edit</button>
+                    </td>
+                  </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    {{/if}}
+
+    <script type="text/javascript" src="profile.js" language="javascript"></script>
